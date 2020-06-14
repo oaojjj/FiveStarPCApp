@@ -25,14 +25,14 @@ public class DBManager implements DBController {
 	private DBManager() {
 	}
 
-	// 싱글톤 구현
-	private static Connection getConnection() {
+	public static Connection getConnection() {
 		if (connection == null) {
 			// Statement state = null;
 			try {
+				// 드라이버 로딩
 				Class.forName(JDBC_DRIVER);
+				// 데이터베이스 연결
 				connection = DriverManager.getConnection(DB, USER, PASSWORD);
-				// state = connection.createStatement();
 				System.out.println("데이터베이스 연결 완료..");
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
@@ -59,51 +59,6 @@ public class DBManager implements DBController {
 				e.printStackTrace();
 			}
 		}
-
-	}
-
-	@Override
-	public void insert(MemberDTO member) {
-		try {
-			Connection conn = DBManager.getConnection();
-
-			String sql = "INSERT INTO member (name,user_id,password,email) VALUES (?,?,?,?)";
-			PreparedStatement pstm = conn.prepareStatement(sql);
-
-			pstm.setString(1, member.getName());
-			pstm.setString(2, member.getId());
-			pstm.setString(3, member.getPassword());
-			pstm.setString(4, member.getEmail());
-
-			int result = pstm.executeUpdate();
-			if (result == 0) {
-				System.out.println("데이터 입력 실패");
-			} else {
-				System.out.println("데이터 입력 성공");
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			DBManager.close();
-		}
-	}
-
-	@Override
-	public MemberDTO select() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void delete() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void update(MemberDTO member) {
-		// TODO Auto-generated method stub
-
 	}
 
 }
