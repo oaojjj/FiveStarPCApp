@@ -7,6 +7,10 @@ public class MemberDTO {
 	String email;
 	int saveTime;
 
+	public MemberDTO() {
+
+	}
+
 	public MemberDTO(String name, String id, String password, String email) {
 		this.name = name;
 		this.id = id;

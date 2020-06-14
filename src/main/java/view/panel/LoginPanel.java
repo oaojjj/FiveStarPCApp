@@ -1,8 +1,9 @@
-package main.java.frame.panel;
+package main.java.view.panel;
 
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.io.File;
@@ -17,20 +18,27 @@ import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
-import main.java.frame.LoginFrame;
+import main.java.common.dto.MemberDTO;
+import main.java.common.setting.Setting;
+import main.java.controller.HomeListener;
+import main.java.view.frame.HomeFrame;
 
 public class LoginPanel extends JPanel {
-	JPanel memberPanel, nonMemberPanel, eventPanel;
-	JTextField tfID, tfCard;
-	JPasswordField pfPassword;
-	JButton btLogin, btForgot, btRegister;
+	private JPanel memberPanel, nonMemberPanel, eventPanel;
+	private JTextField tfID, tfCard;
+	private JPasswordField pfPassword;
+	private JButton btLogin, btForgot, btRegister;
+
+	HomeListener homeListener;
 
 	int loginFormPosX, loginFormPosY;
+	int pcNumber = 5;
 
 	public LoginPanel() {
-		setSize(LoginFrame.SCREEN_WIDTH, LoginFrame.SCREEN_HEIGHT);
+		setSize(Setting.getScreenSize());
 		setLayout(null);
 		initLoingFormPos();
+		introLabel();
 		memberForm();
 		nonMemberForm();
 		eventForm();
@@ -39,8 +47,16 @@ public class LoginPanel extends JPanel {
 	}
 
 	private void initLoingFormPos() {
-		loginFormPosX = LoginFrame.SCREEN_WIDTH / 2 + LoginFrame.SCREEN_WIDTH / 6;
-		loginFormPosY = LoginFrame.SCREEN_HEIGHT / 2 + LoginFrame.SCREEN_HEIGHT / 6;
+		loginFormPosX = HomeFrame.SCREEN_WIDTH / 2 + HomeFrame.SCREEN_WIDTH / 6;
+		loginFormPosY = HomeFrame.SCREEN_HEIGHT / 2 + HomeFrame.SCREEN_HEIGHT / 6;
+	}
+
+	void introLabel() {
+		JLabel pcNumLabel = new JLabel(pcNumber + "번 PC");
+		pcNumLabel.setFont(new Font("바탕", Font.BOLD, 70));
+		pcNumLabel.setBounds(Setting.SCREEN_WIDTH / 2 + Setting.SCREEN_WIDTH / 4, Setting.SCREEN_HEIGHT / 2 - 400, 400,
+				200);
+		add(pcNumLabel);
 	}
 
 	private void setBackgroundImage(String path) {
@@ -48,9 +64,9 @@ public class LoginPanel extends JPanel {
 			// 배경 이미지 만들기
 			Image image = ImageIO.read(new File(path));
 			BackgroundPanel background = new BackgroundPanel(image,
-					LoginFrame.SCREEN_WIDTH / 2 + LoginFrame.SCREEN_WIDTH / 4 - 30, LoginFrame.SCREEN_HEIGHT);
-			background.setBounds(0, 0, LoginFrame.SCREEN_WIDTH / 2 + LoginFrame.SCREEN_WIDTH / 4 - 30,
-					LoginFrame.SCREEN_HEIGHT);
+					HomeFrame.SCREEN_WIDTH / 2 + HomeFrame.SCREEN_WIDTH / 4 - 30, HomeFrame.SCREEN_HEIGHT);
+			background.setBounds(0, 0, HomeFrame.SCREEN_WIDTH / 2 + HomeFrame.SCREEN_WIDTH / 4 - 30,
+					HomeFrame.SCREEN_HEIGHT);
 			add(background);
 		} catch (IOException e) {
 			System.out.println("배경 이미지 불러오기 실패");
@@ -64,11 +80,11 @@ public class LoginPanel extends JPanel {
 		memberPanel.setLayout(new GridLayout(4, 1, 5, 5));
 
 		memberPanel.add(new JLabel("아이디", JLabel.LEFT));
-		tfID = new JTextField(10);
+		tfID = new JTextField(20);
 		memberPanel.add(tfID);
 
 		memberPanel.add(new JLabel("비밀번호", JLabel.LEFT));
-		pfPassword = new JPasswordField(10);
+		pfPassword = new JPasswordField(20);
 		memberPanel.add(pfPassword);
 
 		// memberPanel.setOpaque(false);
@@ -83,7 +99,7 @@ public class LoginPanel extends JPanel {
 		nonMemberPanel.setLayout(new GridLayout(4, 1, 0, 10));
 
 		nonMemberPanel.add(new JLabel("카드번호", JLabel.LEFT));
-		tfCard = new JTextField(10);
+		tfCard = new JTextField(20);
 		nonMemberPanel.add(tfCard);
 
 		nonMemberPanel.add(new JLabel("카드번호는 1~20", JLabel.CENTER));
@@ -111,9 +127,12 @@ public class LoginPanel extends JPanel {
 		btRegister.setBackground(Color.WHITE);
 		btRegister.setPreferredSize(new Dimension(100, 40));
 
-		// btLogin.addActionListener(MyListener);
-		// btForgot.addActionListener(MyListener);
-		// btRegister.addActionListener(MyListener);
+		// 리스너 생성
+		homeListener = new HomeListener();
+
+		btLogin.addActionListener(homeListener);
+		btForgot.addActionListener(homeListener);
+		btRegister.addActionListener(homeListener);
 
 		eventPanel.add(btLogin);
 		eventPanel.add(btForgot);
@@ -123,4 +142,9 @@ public class LoginPanel extends JPanel {
 		eventPanel.setBounds(loginFormPosX + 160, loginFormPosY + 230, 500, 40);
 		add(eventPanel);
 	}
+
+	public String[] getLoginInfo() {
+		return new String[] { tfID.getText(), new String(pfPassword.getPassword()) };
+	}
+
 }

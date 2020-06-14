@@ -1,4 +1,4 @@
-package test;
+package test.java;
 
 import main.java.common.dao.DBController;
 import main.java.common.dto.MemberDTO;

@@ -48,7 +48,7 @@ public interface DBController {
 	default void update(MemberDTO member) {
 	}
 
-	default boolean idCheck(String name) {
+	default boolean checkID(String name) {
 		ResultSet rs;
 		try {
 			Connection conn = DBManager.getConnection();
@@ -68,6 +68,31 @@ public interface DBController {
 					return false;
 			}
 
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+
+	default boolean checkLogin(String id, String password) {
+		ResultSet rs;
+		try {
+			Connection conn = DBManager.getConnection();
+
+			String sql = "SELECT * FROM member WHERE user_id=" + "'" + id + "'";
+			Statement stm = conn.prepareStatement(sql);
+
+			rs = stm.executeQuery(sql);
+
+			if (rs.next()) {
+				// TODO 비밀번호는 암호화 같은거를 해야하는가??
+				String userId = rs.getString(3);
+				String userPassword = rs.getString(4);
+				if (id.equals(userId) && password.equals(userPassword)) {
+					return true;
+				} else
+					return false;
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

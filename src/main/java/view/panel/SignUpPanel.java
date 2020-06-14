@@ -9,6 +9,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JComponent;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -21,19 +22,20 @@ import main.java.common.dao.DBController;
 import main.java.common.dto.MemberDTO;
 import main.java.common.setting.Setting;
 import main.java.common.utill.DBManager;
+import main.java.view.frame.HomeFrame;
 
 public class SignUpPanel extends JPanel {
 	private JPanel signUpPanel;
 	private JTextField tfName, tfID, tfEmail;
 	private JLabel lbName, lbID, lbPassword, lbEmail;
 	private JPasswordField pfPassword;
-	private JButton btCommit, btIdCheck;
+	private JButton btCommit, btIdCheck, btCancle;
 
 	private GridBagConstraints gbc;
 
 	private String saveID;
 	private MemberDTO memberDTO;
-	private DBController dbController = DBManager.getInstance();
+	private DBController dbcon = DBManager.getInstance();
 
 	private boolean checkedID = false;
 
@@ -77,12 +79,16 @@ public class SignUpPanel extends JPanel {
 		gbAdd(tfEmail, 1, 3, 2, 1, 0.7);
 
 		btCommit = new JButton("회원가입");
+		btCancle = new JButton("취소");
 		btCommit.setBackground(Color.WHITE);
-		gbAdd(btCommit, 1, 4, 1, 1, 1);
+		btCancle.setBackground(Color.LIGHT_GRAY);
+		gbAdd(btCancle, 0, 4, 1, 1, 0.3);
+		gbAdd(btCommit, 1, 4, 2, 1, 0.7);
 
 		// 리스너 달기
 		btIdCheck.addActionListener(new SignUpListener());
 		btCommit.addActionListener(new SignUpListener());
+		btCancle.addActionListener(new SignUpListener());
 
 		add(signUpPanel);
 	}
@@ -93,7 +99,7 @@ public class SignUpPanel extends JPanel {
 		gbc.gridwidth = w;
 		gbc.gridheight = h;
 		gbc.weightx = wx;
-		gbc.insets = new Insets(25, 0, 25, 10);
+		gbc.insets = new Insets(25, 10, 25, 10);
 		signUpPanel.add(c, gbc);
 	}
 
@@ -103,6 +109,7 @@ public class SignUpPanel extends JPanel {
 		return j;
 	}
 
+	// TODO 컨트롤러로 따로 뺄까 생각중
 	class SignUpListener implements ActionListener {
 
 		@Override
@@ -113,22 +120,23 @@ public class SignUpPanel extends JPanel {
 				String id = tfID.getText();
 				if (checkValue(id))
 					checkedID = checkID(id);
-			}
 
-			String name = tfName.getText();
-			String password = new String(pfPassword.getPassword());
-			String email = tfEmail.getText();
-
-			if (bt.getText().equals("회원가입")) {
+			} else if (bt.getText().equals("회원가입")) {
+				String name = tfName.getText();
+				String password = new String(pfPassword.getPassword());
+				String email = tfEmail.getText();
 				if (checkedID) {
+
 					// 공백란이 있는지 체크
 					if (checkValue(name, saveID, password, email)) {
+
 						// 중복체크를 하고 다시 아이디를 바꾼 경우 체크
 						if (saveID.equals(tfID.getText())) {
 							memberDTO = new MemberDTO(name, saveID, password, email);
-							dbController.insert(memberDTO);
+							dbcon.insert(memberDTO);
 							JOptionPane.showMessageDialog(signUpPanel, "회원가입이 완료되었습니다.");
-							
+							signUpPanel.setVisible(false);
+							HomeFrame.getLoginPanel().setVisible(true);
 						} else {
 							JOptionPane.showMessageDialog(signUpPanel, "아이디가 변경되었으니 중복검사를 다시 해주세요.");
 							checkedID = false;
@@ -137,14 +145,16 @@ public class SignUpPanel extends JPanel {
 				} else {
 					JOptionPane.showMessageDialog(signUpPanel, "아이디 중복검사를 해주세요.");
 				}
-
+			} else if (bt.getText().equals("취소")) {
+				HomeFrame.getSignUpPanel().setVisible(false);
+				HomeFrame.getLoginPanel().setVisible(true);
 			}
 		}
 	}
 
 	// 중복 아이디 검사 메소드
 	boolean checkID(String id) {
-		checkedID = dbController.idCheck(id);
+		checkedID = dbcon.checkID(id);
 		if (checkedID) {
 			JOptionPane.showMessageDialog(signUpPanel, "중복되는 아이디입니다.");
 			return false;

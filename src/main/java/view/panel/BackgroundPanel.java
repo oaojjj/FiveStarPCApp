@@ -1,4 +1,4 @@
-package main.java.frame.panel;
+package main.java.view.panel;
 
 import java.awt.Graphics;
 import java.awt.Image;
