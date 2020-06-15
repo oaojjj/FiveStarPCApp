@@ -6,6 +6,7 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
 
 import javax.swing.JButton;
 import javax.swing.JComponent;
@@ -97,7 +98,11 @@ public class SignUpPanel extends JPanel {
 
 	// 중복 아이디 검사 메소드
 	public boolean checkID(String id) {
-		checkedID = DBController.checkID(id);
+		try {
+			checkedID = DBController.checkID(id);
+		} catch (SQLException e) {
+			JOptionPane.showMessageDialog(signUpPanel, "관리자에게 문의해주세요.");
+		}
 		if (checkedID) {
 			JOptionPane.showMessageDialog(signUpPanel, "중복되는 아이디입니다.");
 			return false;
@@ -124,7 +129,7 @@ public class SignUpPanel extends JPanel {
 		String id = tfID.getText();
 		String password = new String(pfPassword.getPassword());
 		String email = tfEmail.getText();
-		return new MemberDTO(name, id, password, email);
+		return new MemberDTO(name, id, password, email, 0);
 	}
 
 	public JTextField getTfID() {

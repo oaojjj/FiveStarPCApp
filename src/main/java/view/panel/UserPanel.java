@@ -4,8 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -13,56 +11,77 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
 
+import main.java.common.dto.MemberDTO;
 import main.java.common.setting.Setting;
+import main.java.controller.ThreadManger;
+import main.java.controller.UserEventListener;
+import main.java.thread.FeeThread;
 
-public class UserPanel extends JPanel implements ActionListener {
+public class UserPanel extends JPanel {
 	JButton btStop, btShutdown;
+	JPanel infoPanel, btmPanel;
+	private JLabel helloLabel, nameLabel, userNameLabel, timeLabel, feeLabel, moneyLabel, userTimeLabel;
+
+	String userName;
+	String userFee;
+	String userTime;
+
+	FeeThread feeThread;
 
 	public UserPanel() {
 		setSize(400, 300);
 		setLayout(new BorderLayout());
 		setBorder(new LineBorder(Color.DARK_GRAY, 8, true));
 
-		JPanel infoPanel = new JPanel();
+		initUserInfo();
+
+		infoPanel = new JPanel();
 		infoPanel.setLayout(new GridLayout(3, 2, 10, 10));
 
-		JLabel helloLabel = new JLabel("오성PC방 입니다. 어서오세요~", JLabel.CENTER);
+		// 피시방 이름 같은 거도 변수로 다빼놔야 나중에 유지보수가 편할듯
+		// 예를들어 설정을 만들어서 설정에서 바꿀 수 있게
+		helloLabel = new JLabel("오성PC방 입니다. 어서오세요~", JLabel.CENTER);
 		helloLabel.setFont(new Font("바탕", Font.BOLD, 20));
 
-		JLabel nameLabel = new JLabel("사용자", JLabel.CENTER);
-		JLabel userNameLabel = new JLabel("권오성님");
+		nameLabel = new JLabel("사용자", JLabel.CENTER);
+		userNameLabel = new JLabel(userName + "님");
 		nameLabel.setFont(new Font("바탕", Font.BOLD, 16));
 		userNameLabel.setFont(Setting.getBasicFont());
 		infoPanel.add(nameLabel);
 		infoPanel.add(userNameLabel);
 
-		// 시간과 요금은 쓰레드 써야함
-		JLabel titmeLabel = new JLabel("요금", JLabel.CENTER);
-		JLabel userMoneyLabel = new JLabel("1000원");
-		titmeLabel.setFont(new Font("바탕", Font.BOLD, 16));
-		userMoneyLabel.setFont(Setting.getBasicFont());
-		infoPanel.add(titmeLabel);
-		infoPanel.add(userMoneyLabel);
-
-		JLabel moneyLabel = new JLabel("시간", JLabel.CENTER);
-		JLabel userTimeLabel = new JLabel("00:00:00");
+		// 후불도 하려고 했으나.. 요즘은 선불만 있어서 선불만 만듬
+		moneyLabel = new JLabel("요금", JLabel.CENTER);
+		feeLabel = new JLabel("선불");
 		moneyLabel.setFont(new Font("바탕", Font.BOLD, 16));
-		userTimeLabel.setFont(Setting.getBasicFont());
+		feeLabel.setFont(Setting.getBasicFont());
 		infoPanel.add(moneyLabel);
+		infoPanel.add(feeLabel);
+
+		timeLabel = new JLabel("시간", JLabel.CENTER);
+		userTimeLabel = new JLabel("00:00:00");
+		timeLabel.setFont(new Font("바탕", Font.BOLD, 16));
+		userTimeLabel.setFont(Setting.getBasicFont());
+		infoPanel.add(timeLabel);
 		infoPanel.add(userTimeLabel);
 
-		JPanel btmPanel = new JPanel();
+		btmPanel = new JPanel();
 		btStop = new JButton("사용중지");
-		
+
 		btShutdown = new JButton(new ImageIcon("src/main/resource/button/shutdown_button.png"));
 		btShutdown.setBorderPainted(false);
 		btShutdown.setFocusPainted(false);
 		btShutdown.setContentAreaFilled(false);
 		btShutdown.setPressedIcon(new ImageIcon("src/main/resource/button/button_pressed.png"));
 
-		btStop.addActionListener(this);
-		btShutdown.addActionListener(this);
+		UserEventListener userEventListener = new UserEventListener();
 
+		// 스탑 버튼은 자리이동이나 5분정도 시간 멈추면서 화면도 잠김
+		btStop.addActionListener(userEventListener);
+		// 종료 버튼은 시간 save되고 컴퓨터 종료
+		btShutdown.addActionListener(userEventListener);
+
+		// padding인데 더좋은 방법이 있나봐야함
 		btmPanel.add(new JLabel("                                                                  "));
 		btmPanel.add(btStop);
 		btmPanel.add(btShutdown);
@@ -71,10 +90,16 @@ public class UserPanel extends JPanel implements ActionListener {
 		add(helloLabel, BorderLayout.NORTH);
 		add(infoPanel, BorderLayout.CENTER);
 		add(btmPanel, BorderLayout.SOUTH);
+
+		// 쓰레드 (요금, 사용시간)
+		feeThread = new FeeThread(userTimeLabel);
+		feeThread.start();
+		ThreadManger.setFeeThread(feeThread);
+
 	}
 
-	@Override
-	public void actionPerformed(ActionEvent e) {
-
+	private void initUserInfo() {
+		userName = MemberDTO.getMemberDTO().getName();
 	}
+
 }

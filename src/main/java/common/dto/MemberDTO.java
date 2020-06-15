@@ -1,6 +1,7 @@
 package main.java.common.dto;
 
 public class MemberDTO {
+	private static MemberDTO memberDTO;
 	String name;
 	String id;
 	String password;
@@ -11,12 +12,12 @@ public class MemberDTO {
 
 	}
 
-	public MemberDTO(String name, String id, String password, String email) {
+	public MemberDTO(String name, String id, String password, String email, int saveTime) {
 		this.name = name;
 		this.id = id;
 		this.password = password;
 		this.email = email;
-		saveTime = 0;
+		this.saveTime = saveTime;
 	}
 
 	public String getName() {
@@ -57,6 +58,14 @@ public class MemberDTO {
 
 	public void setSaveTime(int saveTime) {
 		this.saveTime = saveTime;
+	}
+
+	public static MemberDTO getMemberDTO() {
+		return memberDTO;
+	}
+
+	public static void setMemberDTO(MemberDTO memberDTO) {
+		MemberDTO.memberDTO = memberDTO;
 	}
 
 }

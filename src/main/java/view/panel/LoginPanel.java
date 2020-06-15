@@ -20,7 +20,7 @@ import javax.swing.border.TitledBorder;
 
 import main.java.common.dto.MemberDTO;
 import main.java.common.setting.Setting;
-import main.java.controller.HomeListener;
+import main.java.controller.HomeEventListener;
 import main.java.view.frame.HomeFrame;
 
 public class LoginPanel extends JPanel {
@@ -29,7 +29,7 @@ public class LoginPanel extends JPanel {
 	private JPasswordField pfPassword;
 	private JButton btLogin, btForgot, btRegister;
 
-	HomeListener homeListener;
+	HomeEventListener homeEventListener;
 
 	int loginFormPosX, loginFormPosY;
 	int pcNumber = 5;
@@ -128,11 +128,11 @@ public class LoginPanel extends JPanel {
 		btRegister.setPreferredSize(new Dimension(100, 40));
 
 		// 리스너 생성
-		homeListener = new HomeListener();
+		HomeEventListener homeEventListener = new HomeEventListener();
 
-		btLogin.addActionListener(homeListener);
-		btForgot.addActionListener(homeListener);
-		btRegister.addActionListener(homeListener);
+		btLogin.addActionListener(homeEventListener);
+		btForgot.addActionListener(homeEventListener);
+		btRegister.addActionListener(homeEventListener);
 
 		eventPanel.add(btLogin);
 		eventPanel.add(btForgot);
