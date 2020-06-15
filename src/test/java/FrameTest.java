@@ -2,16 +2,19 @@ package test.java;
 
 import javax.swing.JFrame;
 
-import main.java.view.panel.SignUpPanel;
+import main.java.view.panel.UserPanel;
 
 public class FrameTest extends JFrame {
 	public FrameTest() {
-		setSize(1920, 1080);
+		setSize(400, 300);
+		setLocation(1920 - 410, 20);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLayout(null);
+		setUndecorated(true);
 
-		SignUpPanel signUpPanel = new SignUpPanel();
-		add(signUpPanel);
+		UserPanel panel = new UserPanel();
+		panel.setVisible(true);
+		add(panel);
 
 		setVisible(true);
 	}

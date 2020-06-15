@@ -2,26 +2,23 @@ package main.java.view.frame;
 
 import javax.swing.JFrame;
 
+import main.java.common.setting.Setting;
+import main.java.view.panel.UserPanel;
+
 public class UserFrame extends JFrame {
-	private static UserFrame userFrame;
+	public static int SCREEN_WIDTH = 400, SCREEN_HEIGH = 300;
+
+	UserPanel userPanel;
 
 	public UserFrame() {
-		setTitle("피시방에 오신걸 환영합니다^^");
-		setSize(400, 300);
-		// setLocation(Setting.SCREEN_WIDTH - 300, 50);
-		setLocation(1920 - 430, 30);
+		setSize(SCREEN_WIDTH, SCREEN_HEIGH);
+		setLocation(Setting.SCREEN_WIDTH - 410, 20);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		// setUndecorated(true);
+		setUndecorated(true);
 
+		userPanel = new UserPanel();
+		add(userPanel);
 		setVisible(true);
-	}
-
-	public static void main(String[] args) {
-		userFrame = new UserFrame();
-	}
-
-	public static UserFrame getUserFrame() {
-		return userFrame;
 	}
 
 }

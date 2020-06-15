@@ -147,4 +147,17 @@ public class LoginPanel extends JPanel {
 		return new String[] { tfID.getText(), new String(pfPassword.getPassword()) };
 	}
 
+	// 화면전환을 패널의 visible로 하고 있기 때문에 값을 지워준다
+	// 패널을 새로 만들어서 프레임에 붙여도 되지만 안좋은 방법일듯
+	@Override
+	public void setVisible(boolean aFlag) {
+		super.setVisible(aFlag);
+		resetData();
+	}
+
+	void resetData() {
+		tfID.setText("");
+		tfCard.setText("");
+		pfPassword.setText("");
+	}
 }
