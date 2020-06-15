@@ -40,6 +40,7 @@ public class HomeFrame extends JFrame {
 	private void initSetting() {
 		Dimension res = Toolkit.getDefaultToolkit().getScreenSize();
 		Setting.setScreenSize(res.width, res.height);
+		Setting.setPC(20);
 		SCREEN_WIDTH = res.width;
 		SCREEN_HEIGHT = res.height;
 	}

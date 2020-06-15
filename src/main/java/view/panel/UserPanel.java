@@ -13,6 +13,7 @@ import javax.swing.border.LineBorder;
 
 import main.java.common.dto.MemberDTO;
 import main.java.common.setting.Setting;
+import main.java.controller.FrameManger;
 import main.java.controller.ThreadManger;
 import main.java.controller.UserEventListener;
 import main.java.thread.FeeThread;
@@ -40,7 +41,8 @@ public class UserPanel extends JPanel {
 
 		// 피시방 이름 같은 거도 변수로 다빼놔야 나중에 유지보수가 편할듯
 		// 예를들어 설정을 만들어서 설정에서 바꿀 수 있게
-		helloLabel = new JLabel("오성PC방 입니다. 어서오세요~", JLabel.CENTER);
+		helloLabel = new JLabel(FrameManger.getHomeFrame().getLoginPanel().getPcNumber() + "번 PC 입니다. 어서오세요~",
+				JLabel.CENTER);
 		helloLabel.setFont(new Font("바탕", Font.BOLD, 20));
 
 		nameLabel = new JLabel("사용자", JLabel.CENTER);

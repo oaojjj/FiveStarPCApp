@@ -6,11 +6,14 @@ import java.awt.Font;
 public class Setting {
 	private static Setting setting;
 
+	// 피시방 컴퓨터 수
+	public static String PC[];
+
 	// fullScreenSize
 	public static int SCREEN_WIDTH, SCREEN_HEIGHT;
 	private static Dimension screenSize;
 	private static final String fontString = "바탕";
-	private static Font basicFont = new Font(fontString, Font.PLAIN, 16);
+	private static final Font basicFont = new Font(fontString, Font.PLAIN, 16);
 
 	private Setting() {
 	}
@@ -36,6 +39,16 @@ public class Setting {
 
 	public static Dimension getFHDSize() {
 		return new Dimension(1920, 1080);
+	}
+
+	public static void setPC(int n) {
+		if (n != 0) {
+			PC = new String[n];
+			PC[0] = "PC 선택";
+			for (int i = 1; i < n; i++) {
+				PC[i] = String.valueOf(i);
+			}
+		}
 	}
 
 	public static Font getBasicFont() {

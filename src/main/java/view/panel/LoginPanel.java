@@ -6,11 +6,15 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Image;
+import java.awt.TextField;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
@@ -23,8 +27,11 @@ import main.java.common.setting.Setting;
 import main.java.controller.HomeEventListener;
 import main.java.view.frame.HomeFrame;
 
+// 젤처음에 만든 패널이라 뭔가 복잡함
+// 리팩토링 필요
 public class LoginPanel extends JPanel {
 	private JPanel memberPanel, nonMemberPanel, eventPanel;
+	JLabel pcNumLabel;
 	private JTextField tfID, tfCard;
 	private JPasswordField pfPassword;
 	private JButton btLogin, btForgot, btRegister;
@@ -32,7 +39,7 @@ public class LoginPanel extends JPanel {
 	HomeEventListener homeEventListener;
 
 	int loginFormPosX, loginFormPosY;
-	int pcNumber = 5;
+	private String pcNumber;
 
 	public LoginPanel() {
 		setSize(Setting.getScreenSize());
@@ -51,12 +58,42 @@ public class LoginPanel extends JPanel {
 		loginFormPosY = HomeFrame.SCREEN_HEIGHT / 2 + HomeFrame.SCREEN_HEIGHT / 6;
 	}
 
+	void choicePcNumber() {
+
+	}
+
+	// 몇번 컴퓨터 인지 표시,
 	void introLabel() {
-		JLabel pcNumLabel = new JLabel(pcNumber + "번 PC");
+		/*
+		 * JLabel choiceString = new JLabel("PC선택");
+		 * choiceString.setBounds(loginFormPosX, loginFormPosY - 100, 150, 50);
+		 * choiceString.setFont(new Font("돋움", Font.BOLD, 23));
+		 * add(choiceString);
+		 */
+
+		// 피시선택 콤보박스 표시 어차피 나중에 바꿀거기 때문에 대충구현만
+		JComboBox<String> choicePcCombo = new JComboBox<String>(Setting.PC);
+		choicePcCombo.setBounds(loginFormPosX, loginFormPosY - 50, 120, 30);
+		choicePcCombo.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				pcNumber = choicePcCombo.getSelectedItem().toString();
+				if (pcNumber.equals("PC 선택"))
+					pcNumLabel.setText("");
+				else
+					pcNumLabel.setText(pcNumber + "번 PC");
+			}
+		});
+		add(choicePcCombo);
+
+		// 표시
+		pcNumLabel = new JLabel("");
 		pcNumLabel.setFont(new Font("바탕", Font.BOLD, 70));
 		pcNumLabel.setBounds(Setting.SCREEN_WIDTH / 2 + Setting.SCREEN_WIDTH / 4, Setting.SCREEN_HEIGHT / 2 - 400, 400,
 				200);
 		add(pcNumLabel);
+
 	}
 
 	private void setBackgroundImage(String path) {
@@ -115,6 +152,7 @@ public class LoginPanel extends JPanel {
 		eventPanel = new JPanel();
 		eventPanel.setLayout(new FlowLayout(0, 20, 0));
 
+		// 리팩토링 필요........................나중에
 		btLogin = new JButton("로그인");
 		btLogin.setBackground(Color.WHITE);
 		btLogin.setPreferredSize(new Dimension(100, 40));
@@ -160,4 +198,10 @@ public class LoginPanel extends JPanel {
 		tfCard.setText("");
 		pfPassword.setText("");
 	}
+
+	public String getPcNumber() {
+		return pcNumber;
+	}
+	
+	
 }
