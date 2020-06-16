@@ -22,7 +22,6 @@ import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
-import main.java.common.dto.MemberDTO;
 import main.java.common.setting.Setting;
 import main.java.controller.HomeEventListener;
 import main.java.view.frame.HomeFrame;
@@ -50,7 +49,7 @@ public class LoginPanel extends JPanel {
 		nonMemberForm();
 		eventForm();
 		setBackgroundImage("src/main/resource/logo/logo3.png");
-		setBackground(new Color(255, 202, 40)); // 머티리얼 색상 #FFCA28
+		setBackground(new Color(89, 96, 109));
 	}
 
 	private void initLoingFormPos() {
@@ -64,12 +63,6 @@ public class LoginPanel extends JPanel {
 
 	// 몇번 컴퓨터 인지 표시,
 	void introLabel() {
-		/*
-		 * JLabel choiceString = new JLabel("PC선택");
-		 * choiceString.setBounds(loginFormPosX, loginFormPosY - 100, 150, 50);
-		 * choiceString.setFont(new Font("돋움", Font.BOLD, 23));
-		 * add(choiceString);
-		 */
 
 		// 피시선택 콤보박스 표시 어차피 나중에 바꿀거기 때문에 대충구현만
 		JComboBox<String> choicePcCombo = new JComboBox<String>(Setting.PC);
@@ -90,6 +83,7 @@ public class LoginPanel extends JPanel {
 		// 표시
 		pcNumLabel = new JLabel("");
 		pcNumLabel.setFont(new Font("바탕", Font.BOLD, 70));
+		pcNumLabel.setForeground(Color.WHITE);
 		pcNumLabel.setBounds(Setting.SCREEN_WIDTH / 2 + Setting.SCREEN_WIDTH / 4, Setting.SCREEN_HEIGHT / 2 - 400, 400,
 				200);
 		add(pcNumLabel);
@@ -113,7 +107,7 @@ public class LoginPanel extends JPanel {
 	// 회원 로그인 폼
 	private void memberForm() {
 		memberPanel = new JPanel();
-		memberPanel.setBorder((new TitledBorder(new LineBorder(Color.LIGHT_GRAY, 6), "회원 로그인")));
+		memberPanel.setBorder((new TitledBorder(new LineBorder(Color.black, 7), "회원 로그인")));
 		memberPanel.setLayout(new GridLayout(4, 1, 5, 5));
 
 		memberPanel.add(new JLabel("아이디", JLabel.LEFT));
@@ -132,7 +126,7 @@ public class LoginPanel extends JPanel {
 	// 비회원 로그인 폼
 	private void nonMemberForm() {
 		nonMemberPanel = new JPanel();
-		nonMemberPanel.setBorder((new TitledBorder(new LineBorder(Color.LIGHT_GRAY, 6), "비회원 로그인")));
+		nonMemberPanel.setBorder((new TitledBorder(new LineBorder(Color.BLACK, 7), "비회원 로그인")));
 		nonMemberPanel.setLayout(new GridLayout(4, 1, 0, 10));
 
 		nonMemberPanel.add(new JLabel("카드번호", JLabel.LEFT));
@@ -181,10 +175,6 @@ public class LoginPanel extends JPanel {
 		add(eventPanel);
 	}
 
-	public String[] getLoginInfo() {
-		return new String[] { tfID.getText(), new String(pfPassword.getPassword()) };
-	}
-
 	// 화면전환을 패널의 visible로 하고 있기 때문에 값을 지워준다
 	// 패널을 새로 만들어서 프레임에 붙여도 되지만 안좋은 방법일듯
 	@Override
@@ -199,9 +189,12 @@ public class LoginPanel extends JPanel {
 		pfPassword.setText("");
 	}
 
+	public String[] getLoginInfo() {
+		return new String[] { tfID.getText(), new String(pfPassword.getPassword()) };
+	}
+
 	public String getPcNumber() {
 		return pcNumber;
 	}
-	
-	
+
 }

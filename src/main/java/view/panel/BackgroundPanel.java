@@ -15,9 +15,17 @@ public class BackgroundPanel extends JPanel {
 		height = h;
 	}
 
+	public BackgroundPanel(Image i) {
+		image = i;
+	}
+
 	@Override
 	public void paint(Graphics g) {
 		super.paint(g);
-		g.drawImage(image, 0, 0, width, height, null);
+		if (width > 0 && height > 0)
+			g.drawImage(image, 0, 0, width, height, null);
+		else
+			g.drawImage(image, 0, 0, null);
 	}
+
 }

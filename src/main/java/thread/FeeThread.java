@@ -8,6 +8,10 @@ import main.java.common.utill.MyDate;
 import main.java.controller.FrameManger;
 import main.java.view.frame.HomeFrame;
 
+/*
+ * 사용자 데이터 베이스 접근 후 시간이 있다면 그 시간을 남은 시간에 출력 만약 남은 시간이 없다면 컴퓨터 종료(HomeFrame)
+ */
+
 public class FeeThread extends Thread {
 	private JLabel timeLabel;
 	private MyDate myDate;
@@ -17,10 +21,6 @@ public class FeeThread extends Thread {
 		this.timeLabel = timeLabel;
 		flag = true;
 	}
-
-	/*
-	 * 사용자 데이터 베이스 접근 후 시간이 있다면 그 시간을 남은 시간에 출력 만약 남은 시간이 없다면(후불)
-	 */
 
 	@Override
 	public void run() {

@@ -1,12 +1,15 @@
 package main.java.view.frame;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
+
 
 import javax.swing.JFrame;
 
 import main.java.common.setting.Setting;
-import main.java.view.panel.AdminPanel;
+import main.java.view.panel.SeatPanel;
+
+//피시방 컴퓨터 한대당 쓰레드로 표현
+//사용자의 로그인 요청 -> 디비에서 로그인체크  -> 체크되면 서버에 알맞은 피시번호랑 연결해라고 요청 -> 연결
 
 public class AdminFrame extends JFrame {
 	public AdminFrame() {
@@ -14,13 +17,7 @@ public class AdminFrame extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLayout(new BorderLayout());
 
-		AdminPanel adminPanel = new AdminPanel();
-		/*
-		 * JButton test = new JButton("test"); test.setPreferredSize(new
-		 * Dimension(50, 50));
-		 * 
-		 * add(test, BorderLayout.SOUTH);
-		 */
+		SeatPanel adminPanel = new SeatPanel();
 
 		add(adminPanel, BorderLayout.CENTER);
 		setVisible(true);

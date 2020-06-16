@@ -28,7 +28,7 @@ public class SignUpListener implements ActionListener {
 
 		if (bt.getText().equals("중복검사")) {
 			id = memberDTO.getId();
-			if (panel.checkValue(id))
+			if (checkValue(id))
 				panel.setCheckedID(panel.checkID(id));
 
 		} else if (bt.getText().equals("회원가입")) {
@@ -38,7 +38,7 @@ public class SignUpListener implements ActionListener {
 			if (panel.getCheckedID()) {
 
 				// 공백란이 있는지 체크
-				if (panel.checkValue(name, saveID, password, email)) {
+				if (checkValue(name, saveID, password, email)) {
 					// 중복체크를 하고 다시 아이디를 바꾼 경우 체크
 					if (saveID.equals(panel.getTfID().getText())) {
 						try {
@@ -62,5 +62,16 @@ public class SignUpListener implements ActionListener {
 			FrameManger.getHomeFrame().getSignUpPanel().setVisible(false);
 			FrameManger.getHomeFrame().getLoginPanel().setVisible(true);
 		}
+	}
+
+	// 유저 데이터 공백 체크 메소드
+	public boolean checkValue(String... s) {
+		for (String string : s) {
+			if (string.equals("")) {
+				JOptionPane.showMessageDialog(FrameManger.getHomeFrame(), "공백란을  채워주세요.");
+				return false;
+			}
+		}
+		return true;
 	}
 }

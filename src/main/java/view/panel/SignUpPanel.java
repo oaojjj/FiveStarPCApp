@@ -97,6 +97,7 @@ public class SignUpPanel extends JPanel {
 	}
 
 	// 중복 아이디 검사 메소드
+	// TODO 컨트롤러에 집어넣기
 	public boolean checkID(String id) {
 		try {
 			checkedID = DBController.checkID(id);
@@ -113,16 +114,7 @@ public class SignUpPanel extends JPanel {
 		}
 	}
 
-	// 유저 데이터 공백 체크 메소드
-	public boolean checkValue(String... s) {
-		for (String string : s) {
-			if (string.equals("")) {
-				JOptionPane.showMessageDialog(signUpPanel, "공백란을  채워주세요.");
-				return false;
-			}
-		}
-		return true;
-	}
+	
 
 	public MemberDTO getSignUpData() {
 		String name = tfName.getText();

@@ -37,10 +37,11 @@ public class HomeFrame extends JFrame {
 		setVisible(true);
 	}
 
+	// PC방 컴퓨터수 세팅
 	private void initSetting() {
 		Dimension res = Toolkit.getDefaultToolkit().getScreenSize();
 		Setting.setScreenSize(res.width, res.height);
-		Setting.setPC(20);
+		Setting.setPC(Setting.pcCount);
 		SCREEN_WIDTH = res.width;
 		SCREEN_HEIGHT = res.height;
 	}

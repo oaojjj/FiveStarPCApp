@@ -8,12 +8,14 @@ public class Setting {
 
 	// 피시방 컴퓨터 수
 	public static String PC[];
+	public static int pcCount = 28;
 
 	// fullScreenSize
 	public static int SCREEN_WIDTH, SCREEN_HEIGHT;
 	private static Dimension screenSize;
-	private static final String fontString = "바탕";
-	private static final Font basicFont = new Font(fontString, Font.PLAIN, 16);
+	private static final String basicFontString = "바탕";
+	private static final Font basicFont = new Font(basicFontString, Font.PLAIN, 16);
+	private static final Font userInfoFont = new Font("돋움", Font.BOLD, 14);
 
 	private Setting() {
 	}
@@ -56,7 +58,11 @@ public class Setting {
 	}
 
 	public static String getFontstring() {
-		return fontString;
+		return basicFontString;
+	}
+
+	public static Font getUserInfofont() {
+		return userInfoFont;
 	}
 
 }

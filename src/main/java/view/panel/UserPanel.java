@@ -100,6 +100,13 @@ public class UserPanel extends JPanel {
 
 	}
 
+	// 중복되는 메소드 (signUpPanel)
+	JLabel createLabel(String name) {
+		JLabel j = new JLabel(name, JLabel.CENTER);
+		j.setFont(Setting.getBasicFont());
+		return j;
+	}
+
 	private void initUserInfo() {
 		userName = MemberDTO.getMemberDTO().getName();
 	}
