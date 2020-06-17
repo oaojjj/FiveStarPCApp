@@ -4,8 +4,10 @@ import java.awt.Color;
 import java.awt.Image;
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 
 import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 
@@ -21,28 +23,24 @@ public class SeatPanel extends JPanel {
 	public SeatPanel() {
 		setSize(Setting.getFHDSize());
 		setLayout(null);
-		setBackground(new Color(54,62,72));
+		setBackground(new Color(54, 62, 72));
 
 		createPcPanel();
 		// PcPanel test = new PcPanel(1);
 		// test.setBounds(panalCenterX + 35, panelCenterY + 100, 215, 150);
 
 		// add(test);
-		setBackgroundImage("src/main/resource/admin_background2.png");
+		setBackgroundImage("admin_background2.png");
 	}
 
+	// 배경 이미지 만들기
 	private void setBackgroundImage(String path) {
-		try {
-			// 배경 이미지 만들기
-			Image image = ImageIO.read(new File(path));
-			BackgroundPanel background = new BackgroundPanel(image, 1600, 900);
-			background.setBounds(panalCenterX, panelCenterY, 1600, 900);
-			background.setBackground(Color.BLACK);
-			add(background);
-
-		} catch (IOException e) {
-			System.out.println("배경 이미지 불러오기 실패");
-		}
+		URL imageURL = getClass().getClassLoader().getResource(path);
+		ImageIcon imageIcon = new ImageIcon(imageURL);
+		BackgroundPanel background = new BackgroundPanel(imageIcon.getImage(), 1600, 900);
+		background.setBounds(panalCenterX, panelCenterY, 1600, 900);
+		background.setBackground(Color.BLACK);
+		add(background);
 	}
 
 	private void createPcPanel() {
@@ -66,4 +64,11 @@ public class SeatPanel extends JPanel {
 		}
 	}
 
+	public PcPanel[] getPcPanel() {
+		return pcPanel;
+	}
+
+	public void setPcPanel(PcPanel[] pcPanel) {
+		this.pcPanel = pcPanel;
+	}
 }

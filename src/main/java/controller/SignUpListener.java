@@ -7,8 +7,9 @@ import javax.swing.JButton;
 import javax.swing.JOptionPane;
 
 import main.java.common.dao.DBController;
+import main.java.common.dao.DBManager;
 import main.java.common.dto.MemberDTO;
-import main.java.common.utill.DBManager;
+import main.java.controller.manager.FrameManger;
 import main.java.view.panel.SignUpPanel;
 
 public class SignUpListener implements ActionListener {

@@ -8,8 +8,10 @@ import javax.swing.JButton;
 import javax.swing.JOptionPane;
 
 import main.java.common.dao.DBController;
+import main.java.common.dao.DBManager;
 import main.java.common.dto.MemberDTO;
-import main.java.common.utill.DBManager;
+import main.java.controller.manager.FrameManger;
+import main.java.view.frame.AdminFrame;
 import main.java.view.frame.UserFrame;
 
 /*
@@ -25,10 +27,12 @@ public class HomeEventListener implements ActionListener {
 		if (bt.getText().equals("로그인")) {
 			// 로그인 정보를 요청하면 id, password가 데이터로 넘어옴
 			String[] info = FrameManger.getHomeFrame().getLoginPanel().getLoginInfo();
-			
+			boolean flag = 관리자_로그인(info[0], info[1]);
+			if (flag)
+				return;
 			try {
 				if (DBController.checkLogin(info[0], info[1])) {
-					
+
 					// 회원 정보를 불러와서 멤버 정보에 저장
 					MemberDTO.setMemberDTO(dbcon.selectId(info[0]));
 					if (MemberDTO.getMemberDTO().getSaveTime() == 0) {
@@ -54,5 +58,17 @@ public class HomeEventListener implements ActionListener {
 		} else if (bt.getText().equals("회원찾기")) {
 			// TODO 회원찾기 나중에 구현
 		}
+	}
+
+	boolean 관리자_로그인(String id, String pw) {
+		String adminID = "admin";
+		String adminPW = "admin";
+		if (adminID.equals(id) && adminPW.equals(pw)) {
+			FrameManger.getHomeFrame().dispose();
+			AdminFrame adminFrame = new AdminFrame();
+			FrameManger.setAdminFrame(adminFrame);
+			return true;
+		}
+		return false;
 	}
 }

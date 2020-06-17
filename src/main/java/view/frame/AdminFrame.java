@@ -2,7 +2,6 @@ package main.java.view.frame;
 
 import java.awt.BorderLayout;
 
-
 import javax.swing.JFrame;
 
 import main.java.common.setting.Setting;
@@ -16,14 +15,11 @@ public class AdminFrame extends JFrame {
 		setSize(Setting.getFHDSize());
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLayout(new BorderLayout());
+		setUndecorated(false); // 배경 테두리 제거
 
 		SeatPanel adminPanel = new SeatPanel();
 
 		add(adminPanel, BorderLayout.CENTER);
 		setVisible(true);
-	}
-
-	public static void main(String[] args) {
-		new AdminFrame();
 	}
 }

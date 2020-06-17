@@ -13,9 +13,9 @@ import javax.swing.border.LineBorder;
 
 import main.java.common.dto.MemberDTO;
 import main.java.common.setting.Setting;
-import main.java.controller.FrameManger;
-import main.java.controller.ThreadManger;
 import main.java.controller.UserEventListener;
+import main.java.controller.manager.FrameManger;
+import main.java.controller.manager.ThreadManger;
 import main.java.thread.FeeThread;
 
 public class UserPanel extends JPanel {
@@ -70,11 +70,12 @@ public class UserPanel extends JPanel {
 		btmPanel = new JPanel();
 		btStop = new JButton("사용중지");
 
-		btShutdown = new JButton(new ImageIcon("src/main/resource/button/shutdown_button.png"));
+		btShutdown = new JButton(new ImageIcon(getClass().getClassLoader().getResource("button/shutdown_button.png")));
 		btShutdown.setBorderPainted(false);
 		btShutdown.setFocusPainted(false);
 		btShutdown.setContentAreaFilled(false);
-		btShutdown.setPressedIcon(new ImageIcon("src/main/resource/button/button_pressed.png"));
+		btShutdown.setPressedIcon(
+				new ImageIcon(getClass().getClassLoader().getResource("button/common_button_pressed.png")));
 
 		UserEventListener userEventListener = new UserEventListener();
 

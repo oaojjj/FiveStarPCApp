@@ -5,7 +5,7 @@ import javax.swing.JOptionPane;
 
 import main.java.common.dto.MemberDTO;
 import main.java.common.utill.MyDate;
-import main.java.controller.FrameManger;
+import main.java.controller.manager.FrameManger;
 import main.java.view.frame.HomeFrame;
 
 /*

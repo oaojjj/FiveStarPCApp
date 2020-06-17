@@ -7,12 +7,15 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.TextField;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 
 import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -48,7 +51,8 @@ public class LoginPanel extends JPanel {
 		memberForm();
 		nonMemberForm();
 		eventForm();
-		setBackgroundImage("src/main/resource/logo/logo3.png");
+
+		setBackgroundImage("logo/logo3.png");
 		setBackground(new Color(89, 96, 109));
 	}
 
@@ -90,18 +94,15 @@ public class LoginPanel extends JPanel {
 
 	}
 
+	// 배경 이미지 만들기
 	private void setBackgroundImage(String path) {
-		try {
-			// 배경 이미지 만들기
-			Image image = ImageIO.read(new File(path));
-			BackgroundPanel background = new BackgroundPanel(image,
-					HomeFrame.SCREEN_WIDTH / 2 + HomeFrame.SCREEN_WIDTH / 4 - 30, HomeFrame.SCREEN_HEIGHT);
-			background.setBounds(0, 0, HomeFrame.SCREEN_WIDTH / 2 + HomeFrame.SCREEN_WIDTH / 4 - 30,
-					HomeFrame.SCREEN_HEIGHT);
-			add(background);
-		} catch (IOException e) {
-			System.out.println("배경 이미지 불러오기 실패");
-		}
+		URL imageURL = getClass().getClassLoader().getResource(path);
+		ImageIcon imageIcon = new ImageIcon(imageURL);
+		BackgroundPanel background = new BackgroundPanel(imageIcon.getImage(),
+				HomeFrame.SCREEN_WIDTH / 2 + HomeFrame.SCREEN_WIDTH / 4 - 30, HomeFrame.SCREEN_HEIGHT);
+		background.setBounds(0, 0, HomeFrame.SCREEN_WIDTH / 2 + HomeFrame.SCREEN_WIDTH / 4 - 30,
+				HomeFrame.SCREEN_HEIGHT);
+		add(background);
 	}
 
 	// 회원 로그인 폼

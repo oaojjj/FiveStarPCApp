@@ -8,6 +8,8 @@ import javax.swing.JButton;
 
 import main.java.common.dao.DBController;
 import main.java.common.dto.MemberDTO;
+import main.java.controller.manager.FrameManger;
+import main.java.controller.manager.ThreadManger;
 import main.java.view.frame.HomeFrame;
 
 public class UserEventListener implements ActionListener {

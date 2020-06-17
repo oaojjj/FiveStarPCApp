@@ -1,11 +1,10 @@
-package main.java.common.utill;
+package main.java.common.dao;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-import main.java.common.dao.DBController;
 import main.java.common.dto.MemberDTO;
 
 public class DBManager implements DBController {
@@ -13,10 +12,11 @@ public class DBManager implements DBController {
 
 	// 원래는 db이름까지만 추가하면 되지만 mysql 버전이 달라서 jdbc와 타임존의 시간표현 포맷이 달라서 인식을 못하기 때문에
 	// 인식하도록 추가
-	private final static String DB = "jdbc:mysql://localhost:3306/fivestarpc?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
+	//private final static String DB = "jdbc:mysql://localhost:3306/fivestarpc?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
+	private final static String DB = "jdbc:mysql://pcbangtuto1.iptime.org:3306/fivestarpc?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
 
 	private final static String USER = "root";
-	private final static String PASSWORD = "root123";
+	private final static String PASSWORD = "root";
 
 	private static Connection connection;
 	private static DBManager dbManager;

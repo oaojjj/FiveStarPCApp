@@ -1,6 +1,6 @@
 package main.java.view.frame;
 
-import main.java.controller.FrameManger;
+import main.java.controller.manager.FrameManger;
 
 public class MainFrame {
 	public static void main(String[] args) {

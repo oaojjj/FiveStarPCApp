@@ -24,7 +24,7 @@ public class HomeFrame extends JFrame {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		initSetting();
 		setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
-		setUndecorated(true); // 배경 테두리 제거
+		setUndecorated(false); // 배경 테두리 제거
 		setLayout(null);
 
 		loginPanel = new LoginPanel();

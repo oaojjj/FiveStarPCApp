@@ -1,4 +1,4 @@
-package main.java.controller;
+package main.java.controller.manager;
 
 import main.java.thread.FeeThread;
 

@@ -19,9 +19,9 @@ import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
 import main.java.common.dao.DBController;
+import main.java.common.dao.DBManager;
 import main.java.common.dto.MemberDTO;
 import main.java.common.setting.Setting;
-import main.java.common.utill.DBManager;
 import main.java.common.utill.GridBagConstaintsUtill;
 import main.java.controller.SignUpListener;
 import main.java.view.frame.HomeFrame;

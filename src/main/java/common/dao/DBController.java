@@ -9,7 +9,6 @@ import java.sql.Statement;
 import com.mysql.cj.protocol.Resultset;
 
 import main.java.common.dto.MemberDTO;
-import main.java.common.utill.DBManager;
 
 public interface DBController {
 
