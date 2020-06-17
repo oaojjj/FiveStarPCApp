@@ -4,6 +4,7 @@ import main.java.view.frame.AdminFrame;
 import main.java.view.frame.HomeFrame;
 import main.java.view.frame.UserFrame;
 
+// 굳이 필요한가 싶기도 함(보류)
 public class FrameManger {
 	private static HomeFrame homeFrame;
 	private static UserFrame userFrame;

@@ -15,7 +15,7 @@ import main.java.common.setting.Setting;
 
 public class SeatPanel extends JPanel {
 	BackgroundPanel backgroundPanel;
-	PcPanel pcPanel[];
+	public PcPanel pcPanel[];
 
 	int panalCenterX = (1920 - 1600) / 2;
 	int panelCenterY = (1080 - 900) / 2;
@@ -62,6 +62,10 @@ public class SeatPanel extends JPanel {
 				addX += paddingX;
 			}
 		}
+	}
+
+	public void setOn(int pc, String name, String time) {
+		pcPanel[pc].setOn(name, time);
 	}
 
 	public PcPanel[] getPcPanel() {

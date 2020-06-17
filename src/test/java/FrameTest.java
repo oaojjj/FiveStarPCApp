@@ -2,6 +2,7 @@ package test.java;
 
 import javax.swing.JFrame;
 
+import main.java.view.frame.UserFrame;
 import main.java.view.panel.UserPanel;
 
 public class FrameTest extends JFrame {
@@ -20,6 +21,6 @@ public class FrameTest extends JFrame {
 	}
 
 	public static void main(String[] args) {
-		new FrameTest();
+		new UserFrame();
 	}
 }

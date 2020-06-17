@@ -11,6 +11,9 @@ import main.java.common.dao.DBController;
 import main.java.common.dao.DBManager;
 import main.java.common.dto.MemberDTO;
 import main.java.controller.manager.FrameManger;
+import main.java.socket.MyClientSocket;
+import main.java.socket.MyServerSocket;
+import main.java.thread.ServerThread;
 import main.java.view.frame.AdminFrame;
 import main.java.view.frame.UserFrame;
 
@@ -25,22 +28,37 @@ public class HomeEventListener implements ActionListener {
 		JButton bt = (JButton) e.getSource();
 
 		if (bt.getText().equals("로그인")) {
+			
 			// 로그인 정보를 요청하면 id, password가 데이터로 넘어옴
 			String[] info = FrameManger.getHomeFrame().getLoginPanel().getLoginInfo();
-			boolean flag = 관리자_로그인(info[0], info[1]);
-			if (flag)
+			
+			// 피시 번호 골랐는지 체크
+			if (info[0] == null && !info[1].equals("admin")) {
+				JOptionPane.showMessageDialog(FrameManger.getHomeFrame(), "피시번호를 선택해주세요.");
 				return;
+			}
+			
 			try {
-				if (DBController.checkLogin(info[0], info[1])) {
+				if (DBController.checkLogin(info[1], info[2])) {
+					
+					// 사용자가 admin인지 체크
+					if (관리자_로그인(info[1]))
+						return;
 
 					// 회원 정보를 불러와서 멤버 정보에 저장
-					MemberDTO.setMemberDTO(dbcon.selectId(info[0]));
+					MemberDTO.setMemberDTO(dbcon.selectId(info[1]));
+					
+					// 사용자의 남은 시간이 없는 경우
 					if (MemberDTO.getMemberDTO().getSaveTime() == 0) {
 						JOptionPane.showMessageDialog(FrameManger.getHomeFrame(),
 								"<html>남은 시간이 없습니다.<br>충전하고 다시 시도 해주세요.<html>");
 					} else {
+						// 사용자 시간이 남아있으면 로그인 진행
+						MyClientSocket client = new MyClientSocket(info[0], MemberDTO.getMemberDTO().getName(),
+								MemberDTO.getMemberDTO().getSaveTime());
+						
 						JOptionPane.showMessageDialog(FrameManger.getHomeFrame(), "로그인이 되었습니다.");
-
+						
 						// 로그인 완료 후 프레임 종료 유저프레임 생성
 						FrameManger.getHomeFrame().dispose();
 						UserFrame userFrame = new UserFrame();
@@ -60,10 +78,16 @@ public class HomeEventListener implements ActionListener {
 		}
 	}
 
-	boolean 관리자_로그인(String id, String pw) {
+	boolean 관리자_로그인(String id) {
 		String adminID = "admin";
-		String adminPW = "admin";
-		if (adminID.equals(id) && adminPW.equals(pw)) {
+		if (adminID.equals(id)) {
+			
+			// 서버소켓 생성
+			ServerThread serverThread = new ServerThread();
+			serverThread.start();
+			
+			// 관리자 모드 접속 진행
+			JOptionPane.showMessageDialog(FrameManger.getHomeFrame(), "관리자 모드로 접속합니다. ");
 			FrameManger.getHomeFrame().dispose();
 			AdminFrame adminFrame = new AdminFrame();
 			FrameManger.setAdminFrame(adminFrame);

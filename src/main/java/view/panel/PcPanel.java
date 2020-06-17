@@ -106,15 +106,17 @@ public class PcPanel extends JPanel {
 		}
 	}
 
-	void setOn(String name, String time) {
+	public void setOn(String name, String time) {
+		setImg("seat_on_background.png");
 		userInfoLabel[1].setText("사용중");
-		userInfoLabel[1].setForeground(Color.BLACK);
 		userInfoLabel[2].setText(name);
 		userInfoLabel[2].setForeground(Color.BLACK);
 		// 3번 사용자 시간은 쓰레드로 처리해야함
+		userInfoLabel[3].setText(time);
+		userInfoLabel[3].setForeground(Color.BLACK);
 	}
 
-	void setOff(String name, String time) {
+	public void setOff(String name, String time) {
 		setImg("seat_on_background.png");
 		userInfoLabel[1].setText("사용중");
 		userInfoLabel[1].setForeground(Color.BLACK);

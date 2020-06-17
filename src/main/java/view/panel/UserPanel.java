@@ -30,7 +30,6 @@ public class UserPanel extends JPanel {
 	FeeThread feeThread;
 
 	public UserPanel() {
-		setSize(400, 300);
 		setLayout(new BorderLayout());
 		setBorder(new LineBorder(Color.DARK_GRAY, 8, true));
 
@@ -85,7 +84,7 @@ public class UserPanel extends JPanel {
 		btShutdown.addActionListener(userEventListener);
 
 		// padding인데 더좋은 방법이 있나봐야함
-		btmPanel.add(new JLabel("                                                                  "));
+		btmPanel.add(new JLabel("                                                "));
 		btmPanel.add(btStop);
 		btmPanel.add(btShutdown);
 		btmPanel.setBackground(Color.darkGray);

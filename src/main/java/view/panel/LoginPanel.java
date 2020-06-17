@@ -51,7 +51,6 @@ public class LoginPanel extends JPanel {
 		memberForm();
 		nonMemberForm();
 		eventForm();
-
 		setBackgroundImage("logo/logo3.png");
 		setBackground(new Color(89, 96, 109));
 	}
@@ -191,7 +190,8 @@ public class LoginPanel extends JPanel {
 	}
 
 	public String[] getLoginInfo() {
-		return new String[] { tfID.getText(), new String(pfPassword.getPassword()) };
+
+		return new String[] { pcNumber, tfID.getText(), new String(pfPassword.getPassword()) };
 	}
 
 	public String getPcNumber() {
