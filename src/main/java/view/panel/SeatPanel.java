@@ -68,6 +68,10 @@ public class SeatPanel extends JPanel {
 		pcPanel[pc].setOn(name, time);
 	}
 
+	public void setOff(int pc) {
+		pcPanel[pc].setOff();
+	}
+
 	public PcPanel[] getPcPanel() {
 		return pcPanel;
 	}

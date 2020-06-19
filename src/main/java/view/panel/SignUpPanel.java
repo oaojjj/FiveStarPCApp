@@ -23,12 +23,10 @@ import main.java.common.dao.DBManager;
 import main.java.common.dto.MemberDTO;
 import main.java.common.setting.Setting;
 import main.java.common.utill.GridBagConstaintsUtill;
-import main.java.controller.SignUpListener;
+import main.java.controller.SignUpEventListener;
 import main.java.view.frame.HomeFrame;
 
 public class SignUpPanel extends JPanel {
-	private String saveID;
-	private boolean checkedID = false;
 
 	private JPanel signUpPanel;
 	private JTextField tfName, tfID, tfEmail;
@@ -36,13 +34,16 @@ public class SignUpPanel extends JPanel {
 	private JPasswordField pfPassword;
 	private JButton btCommit, btIdCheck, btCancle;
 
+	private boolean checkedID;
+	private String saveID;
+
 	public SignUpPanel() {
 		setSize(Setting.getScreenSize());
 		setLayout(null);
 
 		signUpPanel = new JPanel();
 		signUpPanel.setBorder((new TitledBorder(new LineBorder(Color.LIGHT_GRAY, 6))));
-		signUpPanel.setBounds(1920 / 3 + 100, 1080 / 5, 400, 500);
+		signUpPanel.setBounds(Setting.SCREEN_WIDTH / 3 + 100, Setting.SCREEN_HEIGHT / 5, 400, 500);
 		signUpPanel.setLayout(new GridBagLayout());
 		GridBagConstaintsUtill gUtill = new GridBagConstaintsUtill(new GridBagConstraints(), signUpPanel,
 				new Insets(25, 10, 25, 10));
@@ -83,9 +84,9 @@ public class SignUpPanel extends JPanel {
 		gUtill.gbAdd(btCommit, 1, 4, 2, 1, 0.7);
 
 		// 리스너 달기
-		btIdCheck.addActionListener(new SignUpListener());
-		btCommit.addActionListener(new SignUpListener());
-		btCancle.addActionListener(new SignUpListener());
+		btIdCheck.addActionListener(new SignUpEventListener());
+		btCommit.addActionListener(new SignUpEventListener());
+		btCancle.addActionListener(new SignUpEventListener());
 
 		add(signUpPanel);
 	}
@@ -96,25 +97,21 @@ public class SignUpPanel extends JPanel {
 		return j;
 	}
 
-	// 중복 아이디 검사 메소드
-	// TODO 컨트롤러에 집어넣기
-	public boolean checkID(String id) {
-		try {
-			checkedID = DBController.checkID(id);
-		} catch (SQLException e) {
-			JOptionPane.showMessageDialog(signUpPanel, "관리자에게 문의해주세요.");
-		}
-		if (checkedID) {
-			JOptionPane.showMessageDialog(signUpPanel, "중복되는 아이디입니다.");
-			return false;
-		} else {
-			JOptionPane.showMessageDialog(signUpPanel, "사용 가능한 아이디입니다.");
-			saveID = id;
-			return true;
-		}
+	public String getSaveID() {
+		return saveID;
 	}
 
-	
+	public void setSaveID(String saveID) {
+		this.saveID = saveID;
+	}
+
+	public boolean isCheckedID() {
+		return checkedID;
+	}
+
+	public void setCheckedID(boolean checkedID) {
+		this.checkedID = checkedID;
+	}
 
 	public MemberDTO getSignUpData() {
 		String name = tfName.getText();
@@ -126,22 +123,6 @@ public class SignUpPanel extends JPanel {
 
 	public JTextField getTfID() {
 		return tfID;
-	}
-
-	public String getSaveID() {
-		return saveID;
-	}
-
-	public void setSaveID(String saveID) {
-		this.saveID = saveID;
-	}
-
-	public boolean getCheckedID() {
-		return checkedID;
-	}
-
-	public void setCheckedID(boolean checkedID) {
-		this.checkedID = checkedID;
 	}
 
 	@Override

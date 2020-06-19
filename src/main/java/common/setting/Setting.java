@@ -17,18 +17,6 @@ public class Setting {
 	private static final Font basicFont = new Font(basicFontString, Font.PLAIN, 16);
 	private static final Font userInfoFont = new Font("돋움", Font.BOLD, 14);
 
-	private Setting() {
-	}
-
-	// TODO 굳이 싱글톤할 필요가 있을까? 일단 보류
-	public static Setting getInstance() {
-		if (setting == null) {
-			setting = new Setting();
-
-		}
-		return setting;
-	}
-
 	public static void setScreenSize(int w, int h) {
 		SCREEN_WIDTH = w;
 		SCREEN_HEIGHT = h;

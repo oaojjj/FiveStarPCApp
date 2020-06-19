@@ -20,9 +20,9 @@ public class HomeFrame extends JFrame {
 	private SignUpPanel signUpPanel;
 
 	public HomeFrame() {
+		initSetting();
 		setTitle("오성PC방");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		initSetting();
 		setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
 		setUndecorated(false); // 배경 테두리 제거
 		setLayout(null);
@@ -34,10 +34,11 @@ public class HomeFrame extends JFrame {
 
 		add(signUpPanel);
 		add(loginPanel);
+		
 		setVisible(true);
 	}
 
-	// PC방 컴퓨터수 세팅
+	// PC방 컴퓨터수 세팅 and 스크린 사이즈
 	private void initSetting() {
 		Dimension res = Toolkit.getDefaultToolkit().getScreenSize();
 		Setting.setScreenSize(res.width, res.height);

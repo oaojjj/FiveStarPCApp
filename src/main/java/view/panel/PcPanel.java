@@ -17,6 +17,7 @@ import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 
 import main.java.common.setting.Setting;
+import main.java.thread.FeeThread;
 
 /*
  * -사용자 정보-
@@ -31,6 +32,8 @@ public class PcPanel extends JPanel {
 	Image image;
 	JPanel userInfoPanel;
 	JLabel userInfoLabel[];
+
+	FeeThread feeThread;
 
 	int comNum;
 
@@ -111,17 +114,20 @@ public class PcPanel extends JPanel {
 		userInfoLabel[1].setText("사용중");
 		userInfoLabel[2].setText(name);
 		userInfoLabel[2].setForeground(Color.BLACK);
+
+		FeeThread feeThread = new FeeThread(userInfoLabel[3], Integer.parseInt(time), false);
+		feeThread.start();
 		// 3번 사용자 시간은 쓰레드로 처리해야함
-		userInfoLabel[3].setText(time);
 		userInfoLabel[3].setForeground(Color.BLACK);
 	}
 
-	public void setOff(String name, String time) {
+	public void setOff() {
+		feeThread.threadStop();
 		setImg("seat_on_background.png");
-		userInfoLabel[1].setText("사용중");
-		userInfoLabel[1].setForeground(Color.BLACK);
-		userInfoLabel[2].setText(name);
-		userInfoLabel[2].setForeground(Color.BLACK);
-		// 3번 사용자 시간은 쓰레드로 처리해야함
+		userInfoLabel[1].setText("사용가능");
+		userInfoLabel[2].setText("-- --");
+		userInfoLabel[2].setForeground(Color.WHITE);
+		userInfoLabel[3].setText("-- --");
+		userInfoLabel[3].setForeground(Color.WHITE);
 	}
 }

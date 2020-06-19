@@ -33,14 +33,14 @@ import main.java.view.frame.HomeFrame;
 // 리팩토링 필요
 public class LoginPanel extends JPanel {
 	private JPanel memberPanel, nonMemberPanel, eventPanel;
-	JLabel pcNumLabel;
+	private JLabel pcNumLabel;
 	private JTextField tfID, tfCard;
 	private JPasswordField pfPassword;
 	private JButton btLogin, btForgot, btRegister;
 
 	HomeEventListener homeEventListener;
 
-	int loginFormPosX, loginFormPosY;
+	private static int loginFormPosX, loginFormPosY;
 	private String pcNumber;
 
 	public LoginPanel() {
@@ -64,14 +64,12 @@ public class LoginPanel extends JPanel {
 
 	}
 
-	// 몇번 컴퓨터 인지 표시,
+	// 몇번 컴퓨터 인지 표시
 	void introLabel() {
-
-		// 피시선택 콤보박스 표시 어차피 나중에 바꿀거기 때문에 대충구현만
+		// 피시선택 콤보박스 표시
 		JComboBox<String> choicePcCombo = new JComboBox<String>(Setting.PC);
 		choicePcCombo.setBounds(loginFormPosX, loginFormPosY - 50, 120, 30);
 		choicePcCombo.addActionListener(new ActionListener() {
-
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				pcNumber = choicePcCombo.getSelectedItem().toString();
@@ -176,7 +174,6 @@ public class LoginPanel extends JPanel {
 	}
 
 	// 화면전환을 패널의 visible로 하고 있기 때문에 값을 지워준다
-	// 패널을 새로 만들어서 프레임에 붙여도 되지만 안좋은 방법일듯
 	@Override
 	public void setVisible(boolean aFlag) {
 		super.setVisible(aFlag);
@@ -189,8 +186,8 @@ public class LoginPanel extends JPanel {
 		pfPassword.setText("");
 	}
 
+	// 로그인정보 : pc번호, 아이디, 패스워드
 	public String[] getLoginInfo() {
-
 		return new String[] { pcNumber, tfID.getText(), new String(pfPassword.getPassword()) };
 	}
 

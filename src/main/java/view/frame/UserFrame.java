@@ -21,4 +21,7 @@ public class UserFrame extends JFrame {
 		setVisible(true);
 	}
 
+	public UserPanel getUserPanel() {
+		return userPanel;
+	}
 }

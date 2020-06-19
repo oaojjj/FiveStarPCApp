@@ -24,6 +24,7 @@ public class MyServerSocket {
 			serverSocket = new ServerSocket(9999);
 			System.out.println("연결을 기다리고 있습니다.");
 
+			// 무한 루프를 돌면서 사용자의 로그인 신호를 계속 체크
 			while (flag) {
 				// 클라이언트로부터 연결 요청 대기
 				socket = serverSocket.accept();
@@ -59,10 +60,14 @@ public class MyServerSocket {
 		// 남은 시간
 		String time = st.nextToken();
 
+		if (name.equals("admin"))
+			FrameManger.getAdminFrame().getSeatPanel().setOff(pc);
+
 		FrameManger.getAdminFrame().getSeatPanel().setOn(pc, name, time);
 	}
 
-	void closeServerSocket() {
+	// 어드민이 화면을 끄거나 컴퓨터를 종료할 때
+	void closeSocket() {
 		flag = false;
 	}
 }

@@ -79,11 +79,13 @@ public class UserPanel extends JPanel {
 		UserEventListener userEventListener = new UserEventListener();
 
 		// 스탑 버튼은 자리이동이나 5분정도 시간 멈추면서 화면도 잠김
+		// TODO 나중에 구현
 		btStop.addActionListener(userEventListener);
+
 		// 종료 버튼은 시간 save되고 컴퓨터 종료
 		btShutdown.addActionListener(userEventListener);
 
-		// padding인데 더좋은 방법이 있나봐야함
+		// padding인데 더좋은 방법이 있나봐야함 버튼들이 오른쪽에 가도록
 		btmPanel.add(new JLabel("                                                "));
 		btmPanel.add(btStop);
 		btmPanel.add(btShutdown);
@@ -93,14 +95,12 @@ public class UserPanel extends JPanel {
 		add(infoPanel, BorderLayout.CENTER);
 		add(btmPanel, BorderLayout.SOUTH);
 
-		// 쓰레드 (요금, 사용시간)
-		feeThread = new FeeThread(userTimeLabel);
+		// 쓰레드 (사용시간)
+		feeThread = new FeeThread(userTimeLabel, MemberDTO.getMemberDTO().getSaveTime(), true);
 		feeThread.start();
-		ThreadManger.setFeeThread(feeThread);
-
+		// ThreadManger.setFeeThread(feeThread);
 	}
 
-	// 중복되는 메소드 (signUpPanel)
 	JLabel createLabel(String name) {
 		JLabel j = new JLabel(name, JLabel.CENTER);
 		j.setFont(Setting.getBasicFont());

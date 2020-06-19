@@ -33,7 +33,7 @@ public interface DBController {
 		}
 	}
 
-	// TODO 회원정보 이름으로 조회
+	// 회원정보 이름으로 조회
 	default MemberDTO selectName(String name) throws SQLException {
 		ResultSet rs;
 		Statement stm;
@@ -87,6 +87,7 @@ public interface DBController {
 	default void update(MemberDTO member) {
 	}
 
+	// 사용자가 로그인 시도할 때 회원 아이디가 존재하는지 체크 메소드
 	static boolean checkID(String name) throws SQLException {
 		ResultSet rs;
 		Connection conn = DBManager.getConnection();
@@ -96,16 +97,11 @@ public interface DBController {
 
 		rs = stm.executeQuery(sql);
 
+		// 중복일 경우
 		if (rs.next()) {
-			// TODO 테이블 개수가 바뀌면 숫자도 바꿔야 해서 별로 안좋은 방법같음
-			// 나중에 시간나면 다시 생각
-			String s = rs.getString(3);
-			if (s.equals(name)) {
-				return true;
-			} else
-				return false;
+			return false;
 		}
-		return false;
+		return true;
 	}
 
 	static boolean checkLogin(String id, String password) throws SQLException {
@@ -119,7 +115,7 @@ public interface DBController {
 		rs = stm.executeQuery(sql);
 
 		if (rs.next()) {
-			// TODO 비밀번호는 암호화 같은거를 해야하는가??
+			// TODO 비밀번호는 암호화 같은거를 해야할듯
 			String userId = rs.getString(3);
 			String userPassword = rs.getString(4);
 			if (id.equals(userId) && password.equals(userPassword)) {
@@ -130,6 +126,7 @@ public interface DBController {
 		return false;
 	}
 
+	// 사용자가 컴퓨터를 종료하거나 사용을 중지할 때 남은 시간 세이브 메소드
 	static void saveTime(String id, int time) throws SQLException {
 		// int rows;
 
