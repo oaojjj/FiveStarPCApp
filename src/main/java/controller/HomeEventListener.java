@@ -11,10 +11,10 @@ import main.java.common.dao.DBController;
 import main.java.common.dao.DBManager;
 import main.java.common.dto.MemberDTO;
 import main.java.controller.manager.FrameManger;
-import main.java.socket.MyClientSocket;
-import main.java.socket.MyServerSocket;
-import main.java.thread.ServerThread;
+import main.java.socket.ClientPC;
+import main.java.socket.ServerPC;
 import main.java.view.frame.AdminFrame;
+import main.java.view.frame.HomeFrame;
 import main.java.view.frame.UserFrame;
 
 /*
@@ -29,15 +29,13 @@ public class HomeEventListener implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		JButton bt = (JButton) e.getSource();
 
-		String pc, id, password;
-
 		if (bt.getText().equals("로그인")) {
 
 			// 로그인 정보를 요청하면 pc번호, id, password가 데이터로 넘어옴
 			String[] info = FrameManger.getHomeFrame().getLoginPanel().getLoginInfo();
-			pc = info[0];
-			id = info[1];
-			password = info[2];
+			String pc = info[0];
+			String id = info[1];
+			String password = info[2];
 
 			// 피시 번호 골랐는지 체크
 			if (pc == null && !id.equals("admin")) {
@@ -60,9 +58,12 @@ public class HomeEventListener implements ActionListener {
 						JOptionPane.showMessageDialog(FrameManger.getHomeFrame(),
 								"<html>남은 시간이 없습니다.<br>충전하고 다시 시도 해주세요.<html>");
 					} else {
-						// 사용자 시간이 남아있으면 로그인 진행
-						// TODO 서버로 접속한 PC정보와 사용자의 정보 전송
+						// 사용시간이 남아있으면 로그인 진행
+						// 서버로 접속한 PC정보와 사용자의 정보 전송
 						// 클라이언트 소켓 생성
+						ClientPC clientSocket = new ClientPC(pc, MemberDTO.getMemberDTO().getName(),
+								MemberDTO.getMemberDTO().getSaveTime());
+						clientSocket.start();
 
 						JOptionPane.showMessageDialog(FrameManger.getHomeFrame(), "로그인이 되었습니다.");
 
@@ -93,9 +94,9 @@ public class HomeEventListener implements ActionListener {
 			// 관리자 모드 접속 진행
 			JOptionPane.showMessageDialog(FrameManger.getHomeFrame(), "관리자 모드로 접속합니다. ");
 
-			// TODO 서버소켓 생성
-			ServerThread serverThread = new ServerThread();
-			serverThread.start();
+			// 서버 구동
+			ServerPC serverPC = ServerPC.getInstance();
+			serverPC.start();
 
 			FrameManger.getHomeFrame().dispose();
 			AdminFrame adminFrame = new AdminFrame();

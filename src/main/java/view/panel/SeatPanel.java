@@ -26,10 +26,6 @@ public class SeatPanel extends JPanel {
 		setBackground(new Color(54, 62, 72));
 
 		createPcPanel();
-		// PcPanel test = new PcPanel(1);
-		// test.setBounds(panalCenterX + 35, panelCenterY + 100, 215, 150);
-
-		// add(test);
 		setBackgroundImage("admin_background2.png");
 	}
 
@@ -64,7 +60,7 @@ public class SeatPanel extends JPanel {
 		}
 	}
 
-	public void setOn(int pc, String name, String time) {
+	public void setOn(int pc, String name, int time) {
 		pcPanel[pc].setOn(name, time);
 	}
 

@@ -41,13 +41,13 @@ public class PcPanel extends JPanel {
 		comNum = i;
 		setLayout(null);
 		JPanel imgPanel = new ImgPanel();
-		imgPanel.setBounds(0, 0, 220, 150);
+		imgPanel.setBounds(0, 0, 190, 150);
 		imgPanel.setOpaque(false);
-		setImg("seat_off_background2.png");
+		setImg("seat_off_background.png");
 
 		// 사용자 정보 패널
 		userInfoPanel = new JPanel();
-		userInfoPanel.setBounds(0, 5, 190, 130);
+		userInfoPanel.setBounds(0, 5, 180, 130);
 		userInfoPanel.setLayout(new GridLayout(5, 1));
 
 		userInfoLabel = new JLabel[5];
@@ -109,15 +109,16 @@ public class PcPanel extends JPanel {
 		}
 	}
 
-	public void setOn(String name, String time) {
+	public void setOn(String name, int time) {
 		setImg("seat_on_background.png");
 		userInfoLabel[1].setText("사용중");
 		userInfoLabel[2].setText(name);
 		userInfoLabel[2].setForeground(Color.BLACK);
 
-		FeeThread feeThread = new FeeThread(userInfoLabel[3], Integer.parseInt(time), false);
+		FeeThread feeThread = new FeeThread(userInfoLabel[3], time, false);
 		feeThread.start();
-		// 3번 사용자 시간은 쓰레드로 처리해야함
+		
+		// 3번 사용자 시간은 쓰레드로 처리할지 소켓통신으로 계속 사용자 시간값을 받아야 하는지 모르겠음
 		userInfoLabel[3].setForeground(Color.BLACK);
 	}
 

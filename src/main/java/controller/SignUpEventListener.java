@@ -11,12 +11,14 @@ import main.java.common.dao.DBController;
 import main.java.common.dao.DBManager;
 import main.java.common.dto.MemberDTO;
 import main.java.controller.manager.FrameManger;
+import main.java.view.frame.HomeFrame;
 import main.java.view.panel.SignUpPanel;
 
 public class SignUpEventListener implements ActionListener {
 	private SignUpPanel panel;
 	private MemberDTO memberDTO;
-	DBController dbCon = DBManager.getInstance();
+
+	private DBController dbCon = DBManager.getInstance();
 
 	@Override
 	public void actionPerformed(ActionEvent e) {

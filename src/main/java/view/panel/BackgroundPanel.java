@@ -1,8 +1,11 @@
 package main.java.view.panel;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.net.URL;
 
+import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
 public class BackgroundPanel extends JPanel {
@@ -27,5 +30,4 @@ public class BackgroundPanel extends JPanel {
 		else
 			g.drawImage(image, 0, 0, null);
 	}
-
 }

@@ -11,7 +11,8 @@ import main.java.view.frame.HomeFrame;
 /*
  * 사용자 데이터 베이스 접근 후 시간이 있다면 그 시간을 남은 시간에 출력 만약 남은 시간이 없다면 컴퓨터 종료(HomeFrame)
  */
-
+// TODO 관리자 화면에 사용자의 시간을 받아서 따로 쓰레드를 돌릴지, 사용자의 시간을 소켓으로 받아서 돌릴지 고민
+// 일단 따로 쓰레드로 돌림
 // mode-true: 사용자 패널, mode-false: 어드민 패널
 public class FeeThread extends Thread {
 	private JLabel timeLabel;
