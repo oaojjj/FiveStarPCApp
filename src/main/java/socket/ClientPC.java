@@ -9,8 +9,10 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 
 import jdk.internal.instrumentation.ClassInstrumentation;
+import main.java.view.frame.ChatFrame;
 
 public class ClientPC extends Thread {
+	private static ClientPC clientPC;
 	private BufferedReader in = null;
 	private BufferedWriter out = null;
 	private Socket socket = null;
@@ -18,25 +20,32 @@ public class ClientPC extends Thread {
 	private int pc, time;
 	private String name;
 
+	ChatFrame chatFrame;
+
 	// 피시번호, 사용자 이름, 사용자 남은 시간 불러옴
 	public ClientPC(String pcNumber, String userName, int saveTime) {
 		pc = Integer.parseInt(pcNumber) - 1;
 		name = userName;
 		time = saveTime;
+		clientPC = this;
+
+		try {
+			socket = new Socket(ServerPC.SERVER_IP, ServerPC.PORT_NUMBER);
+			in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+			out = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		System.out.println("클라이언트 연결 성공");
 	}
 
 	@Override
 	public void run() {
 		try {
-			socket = new Socket(ServerPC.SERVER_IP, ServerPC.PORT_NUMBER);
-			System.out.println("클라이언트 연결 성공");
-
-			in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-			out = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
-
-			String initData = pc + "/" + name + "/" + time + "/login\n";
+			String initData = "login/" + pc + "/" + name + "/" + time + "\n";
 			out.write(initData);
 			out.flush();
+
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -44,19 +53,37 @@ public class ClientPC extends Thread {
 
 	private void clientClose() {
 		try {
-			socket.close();
 			out.close();
+			socket.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 
 	}
 
-	public void off(int pc) {
+	public static ClientPC getPC() {
+		return clientPC;
+	}
+
+	// 쓰레드로 통신
+	public void chatOn() {
 		try {
-			String msg = pc - 1 + "/" + "admin\n";
-			out.write(msg);
+			out.write("chat\n");
 			out.flush();
+			chatFrame = new ChatFrame(pc + 1, "user", in, out);
+			Thread chatThread = new Thread(chatFrame);
+			chatThread.start();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	public void off() {
+		try {
+			out.write("logout\n");
+			out.flush();
+			
 			clientClose();
 		} catch (IOException e) {
 			e.printStackTrace();

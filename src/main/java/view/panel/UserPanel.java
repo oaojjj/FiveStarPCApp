@@ -18,6 +18,7 @@ import main.java.common.dto.MemberDTO;
 import main.java.common.setting.Setting;
 import main.java.controller.UserEventListener;
 import main.java.controller.manager.FrameManger;
+import main.java.controller.manager.ThreadManger;
 import main.java.thread.FeeThread;
 
 public class UserPanel extends JPanel {
@@ -126,7 +127,7 @@ public class UserPanel extends JPanel {
 		// 쓰레드 (사용시간)
 		feeThread = new FeeThread(userTimeLabel, MemberDTO.getMemberDTO().getSaveTime(), true);
 		feeThread.start();
-		// ThreadManger.setFeeThread(feeThread);
+		ThreadManger.setFeeThread(feeThread);
 	}
 
 	void setBtnSetting(JButton b) {

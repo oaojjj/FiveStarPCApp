@@ -11,6 +11,7 @@ import java.util.StringTokenizer;
 
 import main.java.controller.manager.FrameManger;
 import main.java.view.frame.AdminFrame;
+import main.java.view.frame.ChatFrame;
 
 public class ServerPC extends Thread {
 	public static final String SERVER_IP = "pcbangtuto1.iptime.org";
@@ -65,15 +66,22 @@ public class ServerPC extends Thread {
 		}
 	}
 
-	class ServerReceiver extends Thread {
+	public class ServerReceiver extends Thread {
 		private AdminFrame adminFrame = FrameManger.getAdminFrame();
+		ServerReceiver sr;
 
 		private Socket socket;
 		private BufferedReader in = null;
 		private BufferedWriter out = null;
 
+		boolean flag;
+
+		ChatFrame chatFrame;
+
 		public ServerReceiver(Socket s) {
 			socket = s;
+			flag = true;
+			sr = this;
 
 			try {
 				in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
@@ -88,32 +96,37 @@ public class ServerPC extends Thread {
 		public void run() {
 			int pc, time;
 			String name, command;
-
+			
 			try {
 				String userData = in.readLine();
 				StringTokenizer st = new StringTokenizer(userData, "/");
 
 				// 유저 데이터(피시번호, 이름, 남은시간)
+				command = st.nextToken();
 				pc = Integer.parseInt(st.nextToken());
 				name = st.nextToken();
 				time = Integer.parseInt(st.nextToken());
-				command = st.nextToken();
 
-				while (in != null) {
+				while (flag) {
+					if (command == null)
+						command = in.readLine();
+
 					switch (command) {
 					case "login":
 						login(pc, name, time);
 						break;
 					case "logout":
+						logout(pc);
 						break;
-					case "message":
+					case "chat":
+						chat(pc);
 						break;
 					case "order":
 						break;
 					default:
 						break;
 					}
-					command = in.readLine();
+					command = null;
 				}
 			} catch (IOException e1) {
 				System.out.println("서버 소켓 유저 데이터 입력 에러");
@@ -123,5 +136,27 @@ public class ServerPC extends Thread {
 		private void login(int pc, String name, int time) {
 			adminFrame.getSeatPanel().pcPanel[pc].setOn(name, time);
 		}
+
+		private void logout(int pc) {
+			adminFrame.getSeatPanel().pcPanel[pc].setOff();
+			receiver.off();
+		}
+
+		synchronized private void chat(int pc) {
+			try {
+				chatFrame = new ChatFrame(pc + 1, "admin", in, out);
+				chatFrame.setReceiver(sr);
+				Thread chatThread = new Thread(chatFrame);
+				chatThread.start();
+				wait();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+
+		public void off() {
+			flag = false;
+		}
 	}
+
 }

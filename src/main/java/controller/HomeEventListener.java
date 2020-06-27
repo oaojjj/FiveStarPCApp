@@ -27,19 +27,21 @@ public class HomeEventListener implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		HomeFrame homeFrame = FrameManger.getHomeFrame();
 		JButton bt = (JButton) e.getSource();
+		
 
 		if (bt.getText().equals("로그인")) {
 
 			// 로그인 정보를 요청하면 pc번호, id, password가 데이터로 넘어옴
-			String[] info = FrameManger.getHomeFrame().getLoginPanel().getLoginInfo();
+			String[] info = homeFrame.getLoginPanel().getLoginInfo();
 			String pc = info[0];
 			String id = info[1];
 			String password = info[2];
 
 			// 피시 번호 골랐는지 체크
 			if (pc == null && !id.equals("admin")) {
-				JOptionPane.showMessageDialog(FrameManger.getHomeFrame(), "피시번호를 선택해주세요.");
+				JOptionPane.showMessageDialog(homeFrame, "피시번호를 선택해주세요.");
 				return;
 			}
 
@@ -55,32 +57,33 @@ public class HomeEventListener implements ActionListener {
 
 					// 사용자의 남은 시간이 없는 경우
 					if (MemberDTO.getMemberDTO().getSaveTime() == 0) {
-						JOptionPane.showMessageDialog(FrameManger.getHomeFrame(),
+						JOptionPane.showMessageDialog(homeFrame,
 								"<html>남은 시간이 없습니다.<br>충전하고 다시 시도 해주세요.<html>");
 					} else {
 						// 사용시간이 남아있으면 로그인 진행
+						JOptionPane.showMessageDialog(homeFrame, "로그인이 되었습니다.");
+
+						// 로그인 완료 후 프레임 종료 유저프레임 생성
+						homeFrame.dispose();
+						UserFrame userFrame = new UserFrame();
+						FrameManger.setUserFrame(userFrame);
+						
+						
 						// 서버로 접속한 PC정보와 사용자의 정보 전송
 						// 클라이언트 소켓 생성
 						ClientPC clientSocket = new ClientPC(pc, MemberDTO.getMemberDTO().getName(),
 								MemberDTO.getMemberDTO().getSaveTime());
 						clientSocket.start();
-
-						JOptionPane.showMessageDialog(FrameManger.getHomeFrame(), "로그인이 되었습니다.");
-
-						// 로그인 완료 후 프레임 종료 유저프레임 생성
-						FrameManger.getHomeFrame().dispose();
-						UserFrame userFrame = new UserFrame();
-						FrameManger.setUserFrame(userFrame);
 					}
 				} else {
-					JOptionPane.showMessageDialog(FrameManger.getHomeFrame(), "아이디 또는 비밀번호가 틀렸습니다.");
+					JOptionPane.showMessageDialog(homeFrame, "아이디 또는 비밀번호가 틀렸습니다.");
 				}
 			} catch (SQLException e1) {
-				JOptionPane.showMessageDialog(FrameManger.getHomeFrame(), "관리자에게 문의해주세요.");
+				JOptionPane.showMessageDialog(homeFrame, "관리자에게 문의해주세요.");
 			}
 		} else if (bt.getText().equals("회원가입")) {
-			FrameManger.getHomeFrame().getLoginPanel().setVisible(false);
-			FrameManger.getHomeFrame().getSignUpPanel().setVisible(true);
+			homeFrame.getLoginPanel().setVisible(false);
+			homeFrame.getSignUpPanel().setVisible(true);
 		} else if (bt.getText().equals("회원찾기")) {
 			// TODO 회원찾기 나중에 구현
 		}

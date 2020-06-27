@@ -84,9 +84,7 @@ public class PcPanel extends JPanel {
 				userInfoLabel[i] = new JLabel("-- --", JLabel.RIGHT);
 				userInfoLabel[i].setForeground(Color.WHITE);
 				userInfoLabel[i].setFont(Setting.getUserInfofont());
-
 			}
-
 			userInfoPanel.add(userInfoLabel[i]);
 		}
 		userInfoPanel.setOpaque(false);
@@ -111,24 +109,39 @@ public class PcPanel extends JPanel {
 
 	public void setOn(String name, int time) {
 		setImg("seat_on_background.png");
+		userInfoLabel[0].setForeground(Color.BLACK);
+
 		userInfoLabel[1].setText("사용중");
+		userInfoLabel[1].setForeground(Color.RED);
+
+		// 이름
 		userInfoLabel[2].setText(name);
 		userInfoLabel[2].setForeground(Color.BLACK);
 
-		FeeThread feeThread = new FeeThread(userInfoLabel[3], time, false);
-		feeThread.start();
-		
-		// 3번 사용자 시간은 쓰레드로 처리할지 소켓통신으로 계속 사용자 시간값을 받아야 하는지 모르겠음
+		// 남은 시간
 		userInfoLabel[3].setForeground(Color.BLACK);
+
+		// 추가 요금
+		userInfoLabel[4].setText("0원");
+		userInfoLabel[4].setForeground(Color.BLACK);
+
+		// 3번 사용자 시간은 쓰레드로 처리할지 소켓통신으로 계속 사용자 시간값을 받아야 하는지 모르겠음
+		feeThread = new FeeThread(userInfoLabel[3], time, false);
+		feeThread.start();
 	}
 
 	public void setOff() {
 		feeThread.threadStop();
-		setImg("seat_on_background.png");
+		setImg("seat_off_background.png");
+
+		userInfoLabel[0].setForeground(Color.WHITE);
+
 		userInfoLabel[1].setText("사용가능");
-		userInfoLabel[2].setText("-- --");
-		userInfoLabel[2].setForeground(Color.WHITE);
-		userInfoLabel[3].setText("-- --");
-		userInfoLabel[3].setForeground(Color.WHITE);
+		userInfoLabel[1].setForeground(Color.ORANGE);
+
+		for (int i = 2; i < 5; i++) {
+			userInfoLabel[i].setText("-- --");
+			userInfoLabel[i].setForeground(Color.WHITE);
+		}
 	}
 }

@@ -22,11 +22,12 @@ public class SignUpEventListener implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		HomeFrame homeFrame = FrameManger.getHomeFrame();
 		String userID, saveID;
 
 		JButton bt = (JButton) e.getSource();
 
-		panel = FrameManger.getHomeFrame().getSignUpPanel();
+		panel = homeFrame.getSignUpPanel();
 		memberDTO = panel.getSignUpData();
 
 		saveID = panel.getSaveID();
@@ -56,8 +57,8 @@ public class SignUpEventListener implements ActionListener {
 						} catch (Exception e2) {
 							JOptionPane.showMessageDialog(panel, "관리자에게 문의해주세요.");
 						} finally {
-							FrameManger.getHomeFrame().getSignUpPanel().setVisible(false);
-							FrameManger.getHomeFrame().getLoginPanel().setVisible(true);
+							homeFrame.getSignUpPanel().setVisible(false);
+							homeFrame.getLoginPanel().setVisible(true);
 						}
 					} else {
 						JOptionPane.showMessageDialog(panel, "아이디가 변경되었으니 중복검사를 다시 해주세요.");
@@ -68,8 +69,8 @@ public class SignUpEventListener implements ActionListener {
 				JOptionPane.showMessageDialog(panel, "아이디 중복검사를 해주세요.");
 			}
 		} else if (bt.getText().equals("취소")) {
-			FrameManger.getHomeFrame().getSignUpPanel().setVisible(false);
-			FrameManger.getHomeFrame().getLoginPanel().setVisible(true);
+			homeFrame.getSignUpPanel().setVisible(false);
+			homeFrame.getLoginPanel().setVisible(true);
 		}
 	}
 
