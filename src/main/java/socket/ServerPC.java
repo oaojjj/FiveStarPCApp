@@ -57,6 +57,10 @@ public class ServerPC extends Thread {
 			}
 	}
 
+	public ServerReceiver getReceiver() {
+		return receiver;
+	}
+
 	// 서버 닫기
 	public void off() {
 		try {
@@ -68,7 +72,7 @@ public class ServerPC extends Thread {
 
 	public class ServerReceiver extends Thread {
 		private AdminFrame adminFrame = FrameManger.getAdminFrame();
-		ServerReceiver sr;
+		private ServerReceiver sr;
 
 		private Socket socket;
 		private BufferedReader in = null;
@@ -76,7 +80,8 @@ public class ServerPC extends Thread {
 
 		boolean flag;
 
-		ChatFrame chatFrame;
+		ChatFrame chatFrame = null;
+		Thread chatThread = null;
 
 		public ServerReceiver(Socket s) {
 			socket = s;
@@ -96,7 +101,7 @@ public class ServerPC extends Thread {
 		public void run() {
 			int pc, time;
 			String name, command;
-			
+
 			try {
 				String userData = in.readLine();
 				StringTokenizer st = new StringTokenizer(userData, "/");
@@ -108,6 +113,7 @@ public class ServerPC extends Thread {
 				time = Integer.parseInt(st.nextToken());
 
 				while (flag) {
+
 					if (command == null)
 						command = in.readLine();
 
@@ -144,14 +150,22 @@ public class ServerPC extends Thread {
 
 		synchronized private void chat(int pc) {
 			try {
-				chatFrame = new ChatFrame(pc + 1, "admin", in, out);
-				chatFrame.setReceiver(sr);
-				Thread chatThread = new Thread(chatFrame);
+				if (chatFrame == null) {
+					chatFrame = new ChatFrame(pc + 1, "server", in, out);
+					chatFrame.setReceiver(sr);
+				} else {
+					chatFrame.setVisible(true);
+				}
+				chatThread = new Thread(chatFrame);
 				chatThread.start();
 				wait();
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
+		}
+
+		public Thread getChatThread() {
+			return chatThread;
 		}
 
 		public void off() {

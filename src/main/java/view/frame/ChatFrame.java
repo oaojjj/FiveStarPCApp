@@ -18,6 +18,7 @@ import javax.swing.JTextField;
 import com.sun.glass.events.WindowEvent;
 
 import main.java.common.setting.Setting;
+import main.java.socket.ClientPC;
 import main.java.socket.ServerPC;
 import main.java.socket.ServerPC.ServerReceiver;
 
@@ -35,7 +36,8 @@ public class ChatFrame extends JFrame implements ActionListener, Runnable {
 	private BufferedReader in;
 	private BufferedWriter out;
 
-	boolean flag = true;
+	private boolean flag;
+	private String exit = "#WA%DFGAK!)#(!@#JSDAFJSSAFds";
 
 	public ChatFrame(int pc, String name, BufferedReader in, BufferedWriter out) {
 		this.pc = pc;
@@ -44,10 +46,11 @@ public class ChatFrame extends JFrame implements ActionListener, Runnable {
 		this.out = out;
 
 		setSize(300, 400);
-		if (name.equals("admin"))
+		if (name.equals("server"))
 			setTitle(pc + "번 PC로 부터 문의");
 		else
 			setTitle("관리자 문의 채팅");
+
 		setLayout(new BorderLayout());
 		setLocation(800, 300);
 
@@ -57,6 +60,7 @@ public class ChatFrame extends JFrame implements ActionListener, Runnable {
 		taDisplay = new JTextArea(18, 18);
 		taDisplay.setFont(Setting.getBasicFont());
 		taDisplay.setEditable(false);
+		taDisplay.setLineWrap(true);
 
 		// 스크롤
 		JScrollPane scrollPane = new JScrollPane(taDisplay);
@@ -73,35 +77,36 @@ public class ChatFrame extends JFrame implements ActionListener, Runnable {
 		add(displayPanel, BorderLayout.CENTER);
 		add(inputPanel, BorderLayout.SOUTH);
 
+		setVisible(true);
+
 		// 쓰레드 너무 어려워서 삽질
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(java.awt.event.WindowEvent e) {
+				setVisible(false);
 				try {
 					flag = false;
-					out.write("\n");
+					out.write(exit + "\n");
 					out.flush();
-					if (name.equals("admin")) {
-						synchronized (sr) {
-							sr.notify();
-						}
-					}
-					super.windowClosing(e);
 				} catch (IOException e1) {
 					e1.printStackTrace();
 				}
+				if (name.equals("server")) {
+					synchronized (sr) {
+						sr.notify();
+					}
+				}
 			}
 		});
-
-		setVisible(true);
 	}
 
+	// 채팅 이벤트
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		try {
 			sendMsg = tfInput.getText();
 			setText(name, sendMsg);
-
+			
 			sendMsg += "\n";
 			out.write(sendMsg);
 			out.flush();
@@ -113,24 +118,26 @@ public class ChatFrame extends JFrame implements ActionListener, Runnable {
 
 	}
 
-	// 시간이 촉박해서 코드가 아주 마음에 안듬
 	@Override
 	public void run() {
+		flag = true;
 		try {
 			while (flag) {
 				receiveMsg = in.readLine();
-				if (name.equals("admin"))
-					setText("user", receiveMsg);
+				if (receiveMsg.equals(exit))
+					break;
+				if (name.equals("server"))
+					setText("client", receiveMsg);
 				else
-					setText("admin", receiveMsg);
+					setText("server", receiveMsg);
 			}
 		} catch (IOException e) {
-			e.printStackTrace();
+			System.out.println("채팅 입출력 에러");
 		}
 	}
 
 	private void setText(String name, String msg) {
-		if (name.equals("admin")) {
+		if (name.equals("server")) {
 			taDisplay.append("관리자 : " + msg + "\n");
 		} else {
 			taDisplay.append(pc + "번 손님 : " + msg + "\n");

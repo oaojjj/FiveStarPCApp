@@ -20,7 +20,8 @@ public class ClientPC extends Thread {
 	private int pc, time;
 	private String name;
 
-	ChatFrame chatFrame;
+	ChatFrame chatFrame = null;
+	Thread chatThread = null;
 
 	// 피시번호, 사용자 이름, 사용자 남은 시간 불러옴
 	public ClientPC(String pcNumber, String userName, int saveTime) {
@@ -65,13 +66,22 @@ public class ClientPC extends Thread {
 		return clientPC;
 	}
 
+	public Thread getChatThread() {
+		return chatThread;
+	}
+
 	// 쓰레드로 통신
-	public void chatOn() {
+	synchronized public void chatOn() {
+
 		try {
 			out.write("chat\n");
 			out.flush();
-			chatFrame = new ChatFrame(pc + 1, "user", in, out);
-			Thread chatThread = new Thread(chatFrame);
+			if (chatFrame == null) {
+				chatFrame = new ChatFrame(pc + 1, "client", in, out);
+			} else {
+				chatFrame.setVisible(true);
+			}
+			chatThread = new Thread(chatFrame);
 			chatThread.start();
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -83,7 +93,6 @@ public class ClientPC extends Thread {
 		try {
 			out.write("logout\n");
 			out.flush();
-			
 			clientClose();
 		} catch (IOException e) {
 			e.printStackTrace();
