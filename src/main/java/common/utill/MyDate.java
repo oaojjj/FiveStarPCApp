@@ -57,7 +57,7 @@ public class MyDate {
 	}
 
 	// 나중에 스트링빌더같은거 써야할 듯
-	void formatTime(int... time) {
+	public void formatTime(int... time) {
 		mTime = "";
 		for (int i : time) {
 			if (i < 10) {

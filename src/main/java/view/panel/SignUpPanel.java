@@ -118,7 +118,7 @@ public class SignUpPanel extends JPanel {
 		String id = tfID.getText();
 		String password = new String(pfPassword.getPassword());
 		String email = tfEmail.getText();
-		return new MemberDTO(name, id, password, email, 0);
+		return new MemberDTO(name, id, password, email, 0, 0);
 	}
 
 	public JTextField getTfID() {

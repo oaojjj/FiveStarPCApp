@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 import com.mysql.cj.protocol.Resultset;
 
@@ -34,7 +35,7 @@ public interface DBController {
 	}
 
 	// 회원정보 이름으로 조회
-	default MemberDTO selectName(String name) throws SQLException {
+	public default MemberDTO selectName(String name) throws SQLException {
 		ResultSet rs;
 		Statement stm;
 		Connection conn = DBManager.getConnection();
@@ -51,7 +52,7 @@ public interface DBController {
 			String userPassword = rs.getString(4);
 			String userEmail = rs.getString(5);
 			String saveTime = rs.getString(6);
-			return new MemberDTO(userName, userID, userPassword, userEmail, Integer.parseInt(saveTime));
+			return new MemberDTO(userName, userID, userPassword, userEmail, Integer.parseInt(saveTime), 0);
 		}
 		return null;
 	}
@@ -74,9 +75,30 @@ public interface DBController {
 			String userPassword = rs.getString(4);
 			String userEmail = rs.getString(5);
 			String saveTime = rs.getString(6);
-			return new MemberDTO(name, userID, userPassword, userEmail, Integer.parseInt(saveTime));
+			return new MemberDTO(name, userID, userPassword, userEmail, Integer.parseInt(saveTime), 0);
 		}
 		return null;
+	}
+
+	default ArrayList<MemberDTO> selectAll() throws SQLException {
+		ArrayList<MemberDTO> list = new ArrayList<>();
+
+		ResultSet rs;
+		Statement stm;
+		Connection conn = DBManager.getConnection();
+
+		String sql = "SELECT * FROM member";
+
+		stm = conn.createStatement();
+
+		rs = stm.executeQuery(sql);
+
+		while (rs.next()) {
+			list.add(new MemberDTO(rs.getString(2), rs.getString(3), "", rs.getString(5),
+					Integer.parseInt(rs.getString(6)), Integer.parseInt(rs.getString(7))));
+		}
+		return list;
+
 	}
 
 	// 회원삭제할 때 구현
@@ -88,7 +110,7 @@ public interface DBController {
 	}
 
 	// 사용자가 로그인 시도할 때 회원 아이디가 존재하는지 체크 메소드
-	static boolean checkID(String name) throws SQLException {
+	public static boolean checkID(String name) throws SQLException {
 		ResultSet rs;
 		Connection conn = DBManager.getConnection();
 
@@ -104,7 +126,7 @@ public interface DBController {
 		return true;
 	}
 
-	static boolean checkLogin(String id, String password) throws SQLException {
+	public static boolean checkLogin(String id, String password) throws SQLException {
 		ResultSet rs;
 
 		Connection conn = DBManager.getConnection();
@@ -127,12 +149,21 @@ public interface DBController {
 	}
 
 	// 사용자가 컴퓨터를 종료하거나 사용을 중지할 때 남은 시간 세이브 메소드
-	static void saveTime(String id, int time) throws SQLException {
-		// int rows;
+	public static void saveTime(String id, int time) throws SQLException {
 
 		Connection conn = DBManager.getConnection();
 
 		String sql = "UPDATE member SET save_time=" + "'" + time + "'" + " WHERE user_id=" + "'" + id + "'";
+		Statement stm = conn.prepareStatement(sql);
+
+		int r = stm.executeUpdate(sql);
+		System.out.println(r);
+	}
+
+	public static void payFee(String id, int fee) throws SQLException {
+
+		Connection conn = DBManager.getConnection();
+		String sql = "UPDATE member SET fee=" + "'" + fee + "'" + " WHERE user_id=" + "'" + id + "'";
 		Statement stm = conn.prepareStatement(sql);
 
 		int r = stm.executeUpdate(sql);

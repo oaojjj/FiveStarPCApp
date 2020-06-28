@@ -14,6 +14,7 @@ import main.java.controller.manager.FrameManger;
 import main.java.socket.ClientPC;
 import main.java.socket.ServerPC;
 import main.java.view.frame.AdminFrame;
+import main.java.view.frame.FeeFrame;
 import main.java.view.frame.HomeFrame;
 import main.java.view.frame.UserFrame;
 
@@ -29,7 +30,6 @@ public class HomeEventListener implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		HomeFrame homeFrame = FrameManger.getHomeFrame();
 		JButton bt = (JButton) e.getSource();
-		
 
 		if (bt.getText().equals("로그인")) {
 
@@ -55,10 +55,13 @@ public class HomeEventListener implements ActionListener {
 					// 회원 정보를 불러와서 멤버 정보에 저장
 					MemberDTO.setMemberDTO(dbcon.selectId(id));
 
-					// 사용자의 남은 시간이 없는 경우
+					// 사용자의 남은 시간이 없는 경우 요금 충전
 					if (MemberDTO.getMemberDTO().getSaveTime() == 0) {
-						JOptionPane.showMessageDialog(homeFrame,
-								"<html>남은 시간이 없습니다.<br>충전하고 다시 시도 해주세요.<html>");
+						int result = JOptionPane.showConfirmDialog(homeFrame, "<html>남은 시간이 없습니다.<br>충전하시겠습니까?<html>",
+								"요금을 충전하셔야 합니다.", JOptionPane.OK_CANCEL_OPTION);
+						if (result == 0) {
+							FeeFrame feeFrame = new FeeFrame(id);
+						}
 					} else {
 						// 사용시간이 남아있으면 로그인 진행
 						JOptionPane.showMessageDialog(homeFrame, "로그인이 되었습니다.");
@@ -67,8 +70,7 @@ public class HomeEventListener implements ActionListener {
 						homeFrame.dispose();
 						UserFrame userFrame = new UserFrame();
 						FrameManger.setUserFrame(userFrame);
-						
-						
+
 						// 서버로 접속한 PC정보와 사용자의 정보 전송
 						// 클라이언트 소켓 생성
 						ClientPC clientSocket = new ClientPC(pc, MemberDTO.getMemberDTO().getName(),

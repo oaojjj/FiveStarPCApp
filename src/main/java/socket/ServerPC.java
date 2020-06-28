@@ -9,6 +9,8 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.StringTokenizer;
 
+import javax.swing.JOptionPane;
+
 import main.java.controller.manager.FrameManger;
 import main.java.view.frame.AdminFrame;
 import main.java.view.frame.ChatFrame;
@@ -78,10 +80,11 @@ public class ServerPC extends Thread {
 		private BufferedReader in = null;
 		private BufferedWriter out = null;
 
-		boolean flag;
+		private boolean flag;
+		private boolean chatFlag = false;
 
-		ChatFrame chatFrame = null;
-		Thread chatThread = null;
+		private ChatFrame chatFrame = null;
+		private Thread chatThread = null;
 
 		public ServerReceiver(Socket s) {
 			socket = s;
@@ -144,8 +147,10 @@ public class ServerPC extends Thread {
 		}
 
 		private void logout(int pc) {
+
 			adminFrame.getSeatPanel().pcPanel[pc].setOff();
 			receiver.off();
+			JOptionPane.showMessageDialog(FrameManger.getAdminFrame(), pc + "번 PC 사용 종료");
 		}
 
 		synchronized private void chat(int pc) {
@@ -154,7 +159,10 @@ public class ServerPC extends Thread {
 					chatFrame = new ChatFrame(pc + 1, "server", in, out);
 					chatFrame.setReceiver(sr);
 				} else {
-					chatFrame.setVisible(true);
+					if (chatFlag) {
+						chatFlag = false;
+						chatFrame.setVisible(true);
+					}
 				}
 				chatThread = new Thread(chatFrame);
 				chatThread.start();
@@ -162,6 +170,10 @@ public class ServerPC extends Thread {
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
+		}
+
+		public void chatOff() {
+			chatFlag = true;
 		}
 
 		public Thread getChatThread() {

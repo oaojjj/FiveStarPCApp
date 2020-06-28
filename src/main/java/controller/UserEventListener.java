@@ -24,7 +24,7 @@ public class UserEventListener implements ActionListener {
 		// 5분동안 화면잠금 (자리이동, 잠깐 일보고 올 때) 5분뒤에는 로그아웃되게 구현할듯
 		// 시간이 남으면 더 구현(아직 미완성)
 		if (button.getText().equals("일시중지")) {
-			try {
+			/*try {
 				if (flag) {
 					ThreadManger.getFeeThread().wait();
 					flag = false;
@@ -34,11 +34,12 @@ public class UserEventListener implements ActionListener {
 				}
 			} catch (InterruptedException e1) {
 				e1.printStackTrace();
-			}
+			}*/
 		} else if (button.getText().equals("주문")) {
 
 		} else if (button.getText().equals("문의")) {
-			clientPC.chatOn();
+			if(clientPC.isOff())
+				clientPC.chatOn();
 		}
 		// 사용자가 사용중지(컴퓨터 종료 등) 할 때
 		else {
@@ -50,7 +51,7 @@ public class UserEventListener implements ActionListener {
 				
 				
 				// 관리자 화면에 있는 사용자 정보 표시를 setOff 설정
-				clientPC.off();
+				clientPC.logout();
 				
 				// 종료 구현하기전에 그냥 홈 프레임으로 넘어가게
 				FrameManger.getUserFrame().dispose();

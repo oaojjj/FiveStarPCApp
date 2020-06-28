@@ -88,13 +88,13 @@ public class ChatFrame extends JFrame implements ActionListener, Runnable {
 					flag = false;
 					out.write(exit + "\n");
 					out.flush();
+
+					if (name.equals("server"))
+						ServerPC.getInstance().getReceiver().chatOff();
+					else
+						ClientPC.getPC().chatOff();
 				} catch (IOException e1) {
 					e1.printStackTrace();
-				}
-				if (name.equals("server")) {
-					synchronized (sr) {
-						sr.notify();
-					}
 				}
 			}
 		});
@@ -106,7 +106,7 @@ public class ChatFrame extends JFrame implements ActionListener, Runnable {
 		try {
 			sendMsg = tfInput.getText();
 			setText(name, sendMsg);
-			
+
 			sendMsg += "\n";
 			out.write(sendMsg);
 			out.flush();
@@ -124,8 +124,20 @@ public class ChatFrame extends JFrame implements ActionListener, Runnable {
 		try {
 			while (flag) {
 				receiveMsg = in.readLine();
-				if (receiveMsg.equals(exit))
+
+				if (receiveMsg.equals(exit)) {
+					// 서버 동기화
+					if (name.equals("server")) {
+						synchronized (sr) {
+							sr.notify();
+						}
+					} else {
+						out.write(exit + "\n");
+						out.flush();
+					}
 					break;
+				}
+
 				if (name.equals("server"))
 					setText("client", receiveMsg);
 				else

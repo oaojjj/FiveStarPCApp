@@ -7,17 +7,19 @@ public class MemberDTO {
 	String password;
 	String email;
 	int saveTime;
+	int fee;
 
 	public MemberDTO() {
 
 	}
 
-	public MemberDTO(String name, String id, String password, String email, int saveTime) {
+	public MemberDTO(String name, String id, String password, String email, int saveTime, int fee) {
 		this.name = name;
 		this.id = id;
 		this.password = password;
 		this.email = email;
 		this.saveTime = saveTime;
+		this.fee = fee;
 	}
 
 	public String getName() {
@@ -66,6 +68,14 @@ public class MemberDTO {
 
 	public static void setMemberDTO(MemberDTO memberDTO) {
 		MemberDTO.memberDTO = memberDTO;
+	}
+
+	public int getFee() {
+		return fee;
+	}
+
+	public void setFee(int fee) {
+		this.fee = fee;
 	}
 
 }

@@ -20,8 +20,10 @@ public class ClientPC extends Thread {
 	private int pc, time;
 	private String name;
 
-	ChatFrame chatFrame = null;
-	Thread chatThread = null;
+	private boolean flag = true;
+
+	private ChatFrame chatFrame = null;
+	private Thread chatThread = null;
 
 	// 피시번호, 사용자 이름, 사용자 남은 시간 불러옴
 	public ClientPC(String pcNumber, String userName, int saveTime) {
@@ -72,7 +74,7 @@ public class ClientPC extends Thread {
 
 	// 쓰레드로 통신
 	synchronized public void chatOn() {
-
+		flag = false;
 		try {
 			out.write("chat\n");
 			out.flush();
@@ -89,7 +91,15 @@ public class ClientPC extends Thread {
 
 	}
 
-	public void off() {
+	public boolean isOff() {
+		return flag;
+	}
+
+	public void chatOff() {
+		flag = true;
+	}
+
+	public void logout() {
 		try {
 			out.write("logout\n");
 			out.flush();

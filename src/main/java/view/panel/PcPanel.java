@@ -29,11 +29,11 @@ import main.java.thread.FeeThread;
  */
 
 public class PcPanel extends JPanel {
-	Image image;
-	JPanel userInfoPanel;
-	JLabel userInfoLabel[];
+	private Image image;
+	private JPanel userInfoPanel;
+	private JLabel userInfoLabel[];
 
-	FeeThread feeThread;
+	private FeeThread feeThread;
 
 	int comNum;
 
