@@ -131,6 +131,7 @@ public class ServerPC extends Thread {
 						chat(pc);
 						break;
 					case "order":
+						order(pc);
 						break;
 					default:
 						break;
@@ -142,6 +143,10 @@ public class ServerPC extends Thread {
 			}
 		}
 
+		private void order(int pc) {
+			JOptionPane.showMessageDialog(FrameManger.getAdminFrame(), pc + "번 PC 주문이 들어왔습니다.");
+		}
+
 		private void login(int pc, String name, int time) {
 			adminFrame.getSeatPanel().pcPanel[pc].setOn(name, time);
 		}
@@ -150,7 +155,7 @@ public class ServerPC extends Thread {
 
 			adminFrame.getSeatPanel().pcPanel[pc].setOff();
 			receiver.off();
-			JOptionPane.showMessageDialog(FrameManger.getAdminFrame(), pc + "번 PC 사용 종료");
+			JOptionPane.showMessageDialog(FrameManger.getAdminFrame(), (pc + 1) + "번 PC 사용 종료");
 		}
 
 		synchronized private void chat(int pc) {

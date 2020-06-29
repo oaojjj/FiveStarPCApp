@@ -3,6 +3,9 @@ package main.java.view.frame;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridLayout;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.util.ArrayList;
 
 import javax.swing.JFrame;
@@ -19,8 +22,7 @@ public class MemberInfoFrame extends JFrame {
 
 	public MemberInfoFrame(ArrayList<MemberDTO> list) {
 		setTitle("회원 정보 조회");
-		setSize(500, 500);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setSize(600, 500);
 		setLayout(new BorderLayout());
 
 		// 대충 화면 중앙
@@ -38,6 +40,7 @@ public class MemberInfoFrame extends JFrame {
 		memberInfoPanel[0].add(createLabel("아이디"));
 		memberInfoPanel[0].add(createLabel("이메일"));
 		memberInfoPanel[0].add(createLabel("남은시간"));
+		memberInfoPanel[0].add(createLabel("누적금액"));
 		memberInfoPanel[0].setBackground(Color.LIGHT_GRAY);
 		panel.add(memberInfoPanel[0]);
 
@@ -52,11 +55,20 @@ public class MemberInfoFrame extends JFrame {
 			memberInfoPanel[i + 1].add(createLabel(dto.getId()));
 			memberInfoPanel[i + 1].add(createLabel(dto.getEmail()));
 			memberInfoPanel[i + 1].add(createLabel(m.toString()));
+			memberInfoPanel[i + 1].add(createLabel(String.valueOf(dto.getFee())));
 			panel.add(memberInfoPanel[i + 1]);
 		}
 
 		add(sp, BorderLayout.NORTH);
 		setVisible(true);
+
+		addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent e) {
+				super.windowClosing(e);
+			}
+		});
+
 	}
 
 	private JLabel createLabel(String s) {

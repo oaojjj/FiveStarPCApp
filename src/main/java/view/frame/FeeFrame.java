@@ -14,6 +14,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import main.java.common.dao.DBController;
+import main.java.common.dto.MemberDTO;
 import main.java.common.setting.Setting;
 import main.java.common.utill.MyDate;
 import main.java.controller.manager.FrameManger;
@@ -92,8 +93,12 @@ public class FeeFrame extends JFrame implements ActionListener {
 			result = Integer.parseInt(moneyLable.getText());
 			try {
 				time = time * 3600;
-				DBController.saveTime(id, new MyDate(time).getSaveTime());
-				DBController.payFee(id, result);
+				if (!id.equals("card")) {
+					DBController.saveTime(id, new MyDate(time).getSaveTime());
+					DBController.payFee(id, result);
+				} else {
+					MemberDTO.getMemberDTO().setSaveTime(time);
+				}
 				setVisible(false);
 				JOptionPane.showMessageDialog(FrameManger.getHomeFrame(), "충전이 완료 되었습니다!");
 				this.dispose();
@@ -101,5 +106,9 @@ public class FeeFrame extends JFrame implements ActionListener {
 				System.out.println("요금 충전 에러");
 			}
 		}
+	}
+
+	public int getTime() {
+		return time;
 	}
 }

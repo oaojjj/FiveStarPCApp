@@ -7,6 +7,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.HashMap;
 
 import jdk.internal.instrumentation.ClassInstrumentation;
 import main.java.view.frame.ChatFrame;
@@ -107,5 +108,15 @@ public class ClientPC extends Thread {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+
+	public void order(HashMap<String, Integer> hashMap, int money) {
+		try {
+			out.write("order\n");
+			out.flush();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
 	}
 }

@@ -10,6 +10,9 @@ public class Setting {
 	public static String PC[];
 	public static int pcCount = 28;
 
+	// 비회원 카드
+	public static int card = 20;
+
 	// fullScreenSize
 	public static int SCREEN_WIDTH, SCREEN_HEIGHT;
 	private static Dimension screenSize;

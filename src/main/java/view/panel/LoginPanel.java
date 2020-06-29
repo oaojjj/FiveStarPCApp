@@ -173,6 +173,14 @@ public class LoginPanel extends JPanel {
 		add(eventPanel);
 	}
 
+	// 비회원 로그인 체크
+	public int isCard() {
+		if (tfCard.getText().equals(""))
+			return -1;
+		else
+			return Integer.parseInt(tfCard.getText());
+	}
+
 	// 화면전환을 패널의 visible로 하고 있기 때문에 값을 지워준다
 	@Override
 	public void setVisible(boolean aFlag) {
@@ -180,7 +188,7 @@ public class LoginPanel extends JPanel {
 		resetData();
 	}
 
-	void resetData() {
+	private void resetData() {
 		tfID.setText("");
 		tfCard.setText("");
 		pfPassword.setText("");
